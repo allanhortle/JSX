@@ -1,6 +1,6 @@
 # [PackageDev] target_format: plist, ext: tmLanguage
 name: JSX
-scopeName: source.js
+scopeName: source.js.jsx
 fileTypes: [jsx]
 uuid: 5BCDBE20-9915-11E3-A5E2-0800200C9A66
 
