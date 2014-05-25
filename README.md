@@ -8,7 +8,7 @@ Language Definitions for JSX files.
 
 Emmet Support
 -------------
-Emmet default's to not support js files. So you will need to add a keyboard shortcut to tab complete in JSX files.
+Emmet's default is to not support JS files. So you will need to add a keyboard shortcut to tab complete in JSX files.
 
 open up `Preferences > Key Bindings - user` and add this entry:
 
