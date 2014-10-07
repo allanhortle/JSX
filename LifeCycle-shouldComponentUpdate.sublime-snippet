@@ -1,0 +1,12 @@
+<snippet>
+    <content><![CDATA[
+shouldComponentUpdate: function (nextProps, nextState) {
+    ${1:}  
+},
+]]></content>
+    <tabTrigger>shouldComponentUpdate</tabTrigger>
+    <scope>source.js.jsx</scope>
+    <description>Life Cycle Method</description>
+</snippet>
+
+

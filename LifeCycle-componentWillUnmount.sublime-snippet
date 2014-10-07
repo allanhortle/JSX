@@ -1,0 +1,10 @@
+<snippet>
+    <content><![CDATA[
+componentWillUnmount: function () {
+    ${1:}  
+},
+]]></content>
+    <tabTrigger>componentWillUnmount</tabTrigger>
+    <scope>source.js.jsx</scope>
+    <description>Life Cycle Method</description>
+</snippet>

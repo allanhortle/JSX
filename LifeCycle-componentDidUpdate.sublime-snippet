@@ -1,0 +1,10 @@
+<snippet>
+    <content><![CDATA[
+componentDidUpdate: function (prevProps, prevState) {
+    ${1:}  
+},
+]]></content>
+    <tabTrigger>componentDidUpdate</tabTrigger>
+    <scope>source.js.jsx</scope>
+    <description>Life Cycle Method</description>
+</snippet>

@@ -1,0 +1,12 @@
+<snippet>
+    <content><![CDATA[
+componentDidMount: function () {
+    ${1:}  
+},
+]]></content>
+    <tabTrigger>componentDidMount</tabTrigger>
+    <scope>source.js.jsx</scope>
+    <description>Life Cycle Method</description>
+</snippet>
+
+

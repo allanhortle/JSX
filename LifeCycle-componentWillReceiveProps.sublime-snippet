@@ -1,0 +1,12 @@
+<snippet>
+    <content><![CDATA[
+componentWillReceiveProps: function (nextProps) {
+    ${1:}  
+},
+]]></content>
+    <tabTrigger>componentWillReceiveProps</tabTrigger>
+    <scope>source.js.jsx</scope>
+    <description>Life Cycle Method</description>
+</snippet>
+
+
