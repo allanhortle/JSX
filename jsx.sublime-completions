@@ -1,0 +1,25 @@
+{
+        "scope": "source.js.jsx",
+        "completions": [
+                { "trigger": "React.PropTypes.array",           "contents": "React.PropTypes.array" },                
+                { "trigger": "React.PropTypes.arrayOf",         "contents": "React.PropTypes.arrayOf($0)" },
+                { "trigger": "React.PropTypes.bool",            "contents": "React.PropTypes.bool" },
+                { "trigger": "React.PropTypes.component",       "contents": "React.PropTypes.component" },
+                { "trigger": "React.PropTypes.func",            "contents": "React.PropTypes.func" },
+                { "trigger": "React.PropTypes.func.isRequired", "contents": "React.PropTypes.func.isRequired" },                
+                { "trigger": "React.PropTypes.instanceOf",      "contents": "React.PropTypes.instanceOf($0)" },
+                { "trigger": "React.PropTypes.isRequired",      "contents": "React.PropTypes.$0.isRequired" },
+                { "trigger": "React.PropTypes.number",          "contents": "React.PropTypes.number" },
+                { "trigger": "React.PropTypes.object",          "contents": "React.PropTypes.object" },                
+                { "trigger": "React.PropTypes.objectOf",        "contents": "React.PropTypes.objectOf($0)" },
+                { "trigger": "React.PropTypes.oneOf",           "contents": "React.PropTypes.oneOf(['$1'])" },
+                { "trigger": "React.PropTypes.oneOfType",       "contents": "React.PropTypes.oneOfType([\n\t$0\n])" },
+                { "trigger": "React.PropTypes.renderable",      "contents": "React.PropTypes.renderable" },                
+                { "trigger": "React.PropTypes.shape",           "contents": "React.PropTypes.shape({})" },
+                { "trigger": "React.propTypes.string",          "contents": "React.propTypes.string" },
+                { "trigger": "React.PropTypes.string",          "contents": "React.PropTypes.string" }
+                
+        ]
+}
+
+
