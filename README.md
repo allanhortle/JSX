@@ -22,6 +22,12 @@ open up `Preferences > Key Bindings - user` and add this entry:
                 "operator": "equal", 
                 "match_all": true, 
                 "key": "selector"
+            },
+            {   
+                "key": "selection_empty", 
+                "operator": "equal", 
+                "operand": true,
+                "match_all": true 
             }
         ]
     }
