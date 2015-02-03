@@ -994,7 +994,7 @@
 				</dict>
 			</dict>
 			<key>match</key>
-			<string>\b([a-zA-Z\-:]+)</string>
+			<string>\b([a-zA-Z\-:_]+)</string>
 			<key>name</key>
 			<string>meta.tag.attribute-name.js</string>
 		</dict>
