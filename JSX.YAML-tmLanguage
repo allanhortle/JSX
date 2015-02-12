@@ -36,7 +36,7 @@ repository:
           '0': {name: punctuation.definition.brace.curly.end.js}
         patterns:
           - include: '#js'
- 
+
 
   html-tags:
     patterns:
@@ -128,7 +128,7 @@ repository:
 
   html-tag-generic-attribute:
     name: entity.other.attribute-name.html
-    match: \b([a-zA-Z\-:]+)
+    match: \b([a-zA-Z\-:_]+)
 
   html-tag-id-attribute:
     name: meta.attribute-with-value.id.html
