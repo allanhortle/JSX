@@ -1,6 +1,6 @@
 {
   "name": "JSX",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "JSX syntax highlighting for Sublime Text",
   "main": "index.js",
   "scripts": {
