@@ -1,0 +1,14 @@
+<snippet>
+    <content><![CDATA[
+getDefaultProps: function () {
+    return {
+        ${1:}  
+    };
+},
+]]></content>
+    <tabTrigger>getDefaultProps</tabTrigger>
+    <scope>source.js.jsx</scope>
+    <description>Life Cycle Method</description>
+</snippet>
+
+
