@@ -15,7 +15,7 @@ var ${1:} = React.createClass({
 module.exports = ${1:};
 ]]></content>
     <tabTrigger>React.class</tabTrigger>
-    <scope>source.js</scope>
+    <scope>source.js.jsx</scope>
     <description>Object Value JS</description>
 </snippet>
 
