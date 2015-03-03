@@ -14,9 +14,7 @@ open up `Preferences > Key Bindings - user` and add this entry:
 
 
     {
-        "keys": ["tab"],
-        "command": "expand_abbreviation_by_tab", 
-        "context": [
+        "keys": ["tab"], "command": "expand_abbreviation_by_tab", "context": [
             {
                 "operand": "source.js.jsx", 
                 "operator": "equal", 
@@ -29,5 +27,10 @@ open up `Preferences > Key Bindings - user` and add this entry:
                 "operand": true,
                 "match_all": true 
             }
+        ]
+    },
+    { "keys": ["tab"], "command": "next_field", "context":
+        [
+            { "key": "has_next_field", "operator": "equal", "operand": true }
         ]
     }
