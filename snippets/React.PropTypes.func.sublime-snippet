@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+React.PropTypes.func
+]]></content>
+    <tabTrigger>function</tabTrigger>
+    <scope>source.js.jsx</scope>
+    <description>React.PropTypes.func</description>
+</snippet>

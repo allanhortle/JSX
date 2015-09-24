@@ -10,6 +10,11 @@ patterns:
 
 
 repository:
+  html:
+    patterns:
+      - include: '#html-tags'
+      - include: '#html-entities'
+
   js:
     patterns:
       - include: '#js-constants'
@@ -19,11 +24,6 @@ repository:
       - include: '#js-strings'
       - include: '#js-comments'
       - include: '#js-misc'
-
-  html:
-    patterns:
-      - include: '#html-tags'
-      - include: '#html-entities'
 
   html-evaluated:
     patterns:

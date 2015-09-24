@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+React.PropTypes.component
+]]></content>
+    <tabTrigger>component</tabTrigger>
+    <scope>source.js.jsx</scope>
+    <description>React.PropTypes.component</description>
+</snippet>

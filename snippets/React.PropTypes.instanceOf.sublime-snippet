@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+React.PropTypes.instanceOf($0)
+]]></content>
+    <tabTrigger>instanceOf</tabTrigger>
+    <scope>source.js.jsx</scope>
+    <description>React.PropTypes.instanceOf</description>
+</snippet>

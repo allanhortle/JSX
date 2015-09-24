@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+React.PropTypes.shape({})
+]]></content>
+    <tabTrigger>shape</tabTrigger>
+    <scope>source.js.jsx</scope>
+    <description>React.PropTypes.shape</description>
+</snippet>

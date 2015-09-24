@@ -1,0 +1,10 @@
+<snippet>
+    <content><![CDATA[
+import ${1} from '${2}${1}';
+]]></content>
+    <tabTrigger>import</tabTrigger>
+    <scope>source.js.jsx</scope>
+    <description>(ES2015)</description>
+</snippet>
+
+

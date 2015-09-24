@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+isRequired
+]]></content>
+    <tabTrigger>isRequired</tabTrigger>
+    <scope>source.js.jsx</scope>
+    <description>React.PropTypes.{type}.isRequired</description>
+</snippet>

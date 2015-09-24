@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+React.PropTypes.oneOf(['$1'])
+]]></content>
+    <tabTrigger>oneOf</tabTrigger>
+    <scope>source.js.jsx</scope>
+    <description>React.PropTypes.oneOf</description>
+</snippet>
