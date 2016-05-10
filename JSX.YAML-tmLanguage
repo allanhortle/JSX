@@ -130,36 +130,36 @@ repository:
     name: entity.other.attribute-name.html
     match: \b([a-zA-Z\-:_]+)
 
-  html-tag-id-attribute:
-    name: meta.attribute-with-value.id.html
-    begin: \b(id)\b\s*(=)
-    end: (?<='|")
-    captures:
-      '1': {name: entity.other.attribute-name.id.html}
-      '2': {name: punctuation.separator.key-value.html}
-    patterns:
-    - name: string.quoted.double.html
-      contentName: meta.toc-list.id.html
-      begin: '"'
-      beginCaptures:
-        '0': {name: punctuation.definition.string.begin.html}
-      end: '"'
-      endCaptures:
-        '0': {name: punctuation.definition.string.end.html}
-      patterns:
-      - include: '#embedded-code'
-      - include: '#entities'
-    - name: string.quoted.single.html
-      contentName: meta.toc-list.id.html
-      begin: "'"
-      beginCaptures:
-        '0': {name: punctuation.definition.string.begin.html}
-      end: "'"
-      endCaptures:
-        '0': {name: punctuation.definition.string.end.html}
-      patterns:
-      - include: '#embedded-code'
-      - include: '#entities'
+  # html-tag-id-attribute:
+  #   name: meta.attribute-with-value.id.html
+  #   begin: \b(id)\b\s*(=)
+  #   end: (?<='|"\})
+  #   captures:
+  #     '1': {name: entity.other.attribute-name.id.html}
+  #     '2': {name: punctuation.separator.key-value.html}
+  #   patterns:
+  #   - name: string.quoted.double.html
+  #     contentName: meta.toc-list.id.html
+  #     begin: '"'
+  #     beginCaptures:
+  #       '0': {name: punctuation.definition.string.begin.html}
+  #     end: '"'
+  #     endCaptures:
+  #       '0': {name: punctuation.definition.string.end.html}
+  #     patterns:
+  #     - include: '#embedded-code'
+  #     - include: '#entities'
+  #   - name: string.quoted.single.html
+  #     contentName: meta.toc-list.id.html
+  #     begin: "'"
+  #     beginCaptures:
+  #       '0': {name: punctuation.definition.string.begin.html}
+  #     end: "'"
+  #     endCaptures:
+  #       '0': {name: punctuation.definition.string.end.html}
+  #     patterns:
+  #     - include: '#embedded-code'
+  #     - include: '#entities'
 
 
   js-hashbang:
@@ -178,6 +178,17 @@ repository:
 
       - name: constant.numeric.js
         match: \b((0(x|X)[0-9a-fA-F]+)|([0-9]+(\.[0-9]+)?))\b
+
+      - name: constant.variable.js
+        match: \b[A-Z_]+\b
+
+      # - name: source.js
+      #   begin: import|const\s([A-Z_]*)[\s\S]
+      #   beginCaptures:
+      #     '1': {name: constant.variable.js}
+      #   end: (\1)
+      #   endCaptures:
+      #     '1': {name: constant.variable.js}
 
   js-functions:
     patterns:
