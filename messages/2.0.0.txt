@@ -1,0 +1,8 @@
+JSX 2.0.0 - Autocomplete
+========================
+
+* Added lots of the React API to JSX.sublime-completions
+* Removed all snippets (Replaced with autocomplete)
+
+Be sure to make issues (or shout at me) for missing or broken autocomplete:
+https://github.com/allanhortle/JSX/issues
