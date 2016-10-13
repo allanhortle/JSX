@@ -1,0 +1,5 @@
+JSX - Syntax & Autocomplete
+===========================
+
+Be sure to make issues (or shout at me) for missing/broken things:
+https://github.com/allanhortle/JSX/issues
