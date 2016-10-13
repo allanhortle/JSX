@@ -1,8 +1,0 @@
-<snippet>
-    <content><![CDATA[
-React.PropTypes.objectOf($0)
-]]></content>
-    <tabTrigger>objectOf</tabTrigger>
-    <scope>source.js.jsx</scope>
-    <description>React.PropTypes.objectOf</description>
-</snippet>

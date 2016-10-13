@@ -1,8 +1,0 @@
-<snippet>
-    <content><![CDATA[
-React.PropTypes.array
-]]></content>
-    <tabTrigger>array</tabTrigger>
-    <scope>source.js.jsx</scope>
-    <description>React.PropTypes.array</description>
-</snippet>

@@ -1,8 +1,0 @@
-<snippet>
-    <content><![CDATA[
-React.PropTypes.bool
-]]></content>
-    <tabTrigger>boolean</tabTrigger>
-    <scope>source.js.jsx</scope>
-    <description>React.PropTypes.bool</description>
-</snippet>

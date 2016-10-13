@@ -1,8 +1,0 @@
-<snippet>
-    <content><![CDATA[
-React.PropTypes.renderable
-]]></content>
-    <tabTrigger>renderable</tabTrigger>
-    <scope>source.js.jsx</scope>
-    <description>React.PropTypes.renderable</description>
-</snippet>

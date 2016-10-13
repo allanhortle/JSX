@@ -1,8 +1,0 @@
-<snippet>
-    <content><![CDATA[
-React.PropTypes.arrayOf($0)
-]]></content>
-    <tabTrigger>arrayOf</tabTrigger>
-    <scope>source.js.jsx</scope>
-    <description>React.PropTypes.arrayOf</description>
-</snippet>
