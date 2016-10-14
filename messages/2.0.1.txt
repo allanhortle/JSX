@@ -1,0 +1,4 @@
+JSX 2.0.1
+=========
+
+change deprecated propType `component` to `element`
