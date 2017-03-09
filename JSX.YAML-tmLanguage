@@ -331,6 +331,12 @@ repository:
         captures:
           '0': {name: punctuation.definition.comment.js}
 
+      - name: comment.block.js.jsx
+        begin: \{/\*
+        end: \*/\}
+        captures:
+          '0': {name: punctuation.definition.comment.js.jsx}
+
       - name: comment.line.double-slash.js
         match: (//).*$\n?
         captures:
