@@ -1,0 +1,85 @@
+%YAML 1.2
+---
+name: JSX
+file_extensions: [jsx]
+scope: source.js.jsx
+variables:
+  reservedWords: "(break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|for|function|from|if|import|in|instanceof|new|return|super|switch|this|throw|try|typeof|var|void|while|with|yield|enum|implements|interface|let|package|private|protected|public|static|await|abstract|boolean|byte|char|double|final|float|goto|int|long|native|short|synchronized|throws|transient|volatile)"
+  constantWords: "(true|false|null|Infinity|NaN|undefined)"
+
+  string: "(\"|'|`)"
+contexts:
+  main:
+    - include: javascript
+    - include: jsx
+  
+  javascript: 
+    - include: keywords
+    - include: constants
+    - include: strings
+
+  jsx:
+    - include: tags
+
+
+  tags: 
+    - match: (</?)([a-zA-Z0-9:]+)
+      push: tag
+
+  tag:
+    - meta_scope: entity.js
+    - match: \{
+      push: javascriptEmbedded
+    - match: \>
+      pop: true
+
+  strings: 
+    - match: "'"
+      push: stringSingle
+    - match: "\""
+      push: stringDouble
+    - match: "`"
+      push: stringTemplate
+    - match: "/"
+      push: stringRegex
+
+  keywords:
+    - match: '\b{{reservedWords}}\b'
+      scope: keyword.control.js
+
+  constants:
+    - match: '\b{{constantWords}}\b'
+      scope: constant.language.js
+    - match: '\b((0(x|X)[0-9a-fA-F]+)|([0-9]+(\.[0-9]+)?))\b'
+      scope: constant.numeric.js
+    - match: (&.*;)
+      scope: constant.numeric.js
+
+  stringSingle: 
+    - meta_scope: string.quoted.js
+    - match: "'"
+      pop: true
+
+  stringDouble: 
+    - meta_scope: string.quoted.js
+    - match: "\""
+      pop: true
+
+  stringRegex:
+    - meta_scope: string.quoted.js
+    - match: "/[gimuy]?"
+      pop: true
+
+  stringTemplate:
+    - meta_scope: string.quoted.js
+    - match: \${
+      push: templateExpressions
+    - match: "`"
+      pop: true
+
+  templateExpressions:
+    - clear_scopes: true
+    - include: javascript
+    - match: \}
+      pop: true
+
