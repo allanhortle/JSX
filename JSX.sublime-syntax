@@ -13,25 +13,65 @@ contexts:
     - include: javascript
     - include: jsx
   
+
+
+
+  #
+  # JSX
+  # 
+
+  javascriptEmbedded:
+    - clear_scopes: true
+    - include: jsx
+    - include: javascript
+    - match: \}
+      # scope: entity
+      pop: true
+
+  jsx:
+    - include: tags
+    - include: attributes
+
+  tags: 
+    - match: <
+      scope: entity.js
+      push: tag
+
+  attributes: 
+    - match: \b([a-zA-Z\-:_]+)=
+      scope: entity.js
+      push: tag
+
+  tag:
+    - meta_scope: entity
+    - include: strings
+    - match: \{
+      # scope: entity
+      push: javascriptEmbedded
+    - match: \>
+      pop: true
+
+    
+  #
+  # JS
+  # 
+  
   javascript: 
     - include: keywords
     - include: constants
     - include: strings
+    - include: comments
 
-  jsx:
-    - include: tags
+  comments: 
+    - scope: comment.block.js
+      match: /\*
+      push:
+        - meta_scope: comment.block.js
+        - match: \*/
+          pop: true
 
-
-  tags: 
-    - match: (</?)([a-zA-Z0-9:]+)
-      push: tag
-
-  tag:
-    - meta_scope: entity.js
-    - match: \{
-      push: javascriptEmbedded
-    - match: \>
-      pop: true
+    - scope: comment.line.js
+      match: (//).*$\n?
 
   strings: 
     - match: "'"
@@ -40,7 +80,7 @@ contexts:
       push: stringDouble
     - match: "`"
       push: stringTemplate
-    - match: "/"
+    - match: (?<=[=(:]|^|return|&&|\|\||!)\s*(/)(?![/*+{}?])
       push: stringRegex
 
   keywords:
@@ -73,6 +113,7 @@ contexts:
   stringTemplate:
     - meta_scope: string.quoted.js
     - match: \${
+      # scope: string.quoted.js
       push: templateExpressions
     - match: "`"
       pop: true
@@ -81,5 +122,6 @@ contexts:
     - clear_scopes: true
     - include: javascript
     - match: \}
+      # scope: string.quoted.js
       pop: true
 
