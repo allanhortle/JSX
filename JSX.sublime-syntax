@@ -53,7 +53,7 @@ contexts:
     - clear_scopes: 1
     - include: jsx
     - include: javascript
-    - match: \}
+    - match: \}(\s*?)([\}]+)?
       pop: true
     
   #
@@ -83,16 +83,6 @@ contexts:
     - scope: comment.line.js
       match: (//).*$\n?
 
-  strings: 
-    - match: "'"
-      push: stringSingle
-    - match: "\""
-      push: stringDouble
-    - match: "`"
-      push: stringTemplate
-    - match: (?<=[=(:]|^|return|&&|\|\||!)\s*(/)(?![/*+{}?])
-      push: stringRegex
-
   keywords:
     - match: '\b{{reservedWords}}\b'
       scope: keyword.control.js
@@ -100,7 +90,18 @@ contexts:
   constants:
     - match: '\b{{constantWords}}\b'
       scope: constant.language.js
-    - match: '\b((0(x|X)[0-9a-fA-F]+)|([0-9]+(\.[0-9]+)?))\b'
+    - match: >-
+        (?xi)
+          (?:\B[-+])?
+          (?:
+            \b0b[0-1]*|                 # binary
+            \b0o[0-7]*|                 # octal
+            \b0x[0-9a-f]*|              # hex
+            (
+              \B\.[0-9]+|               # e.g. .999
+              \b[0-9]+(\.[0-9]*)?       # e.g. 999.999, 999. or 999
+            )(e[-+]?[0-9]+)?            # e.g. e+123, E-123
+          )
       scope: constant.numeric.js
     - match: (&.*?;)
       scope: constant.other.js
@@ -108,6 +109,16 @@ contexts:
   constantEscape:
     - match: \\.
       scope: constant.character.escape
+
+  strings: 
+    - match: "'"
+      push: stringSingle
+    - match: "\""
+      push: stringDouble
+    - match: "`"
+      push: stringTemplate
+    - match: (?<=[=(:]|^|return|&&|\|\||!)\s*(/)(?![/*+{}?>])
+      push: stringRegex
 
   stringSingle: 
     - meta_scope: string.quoted.js
@@ -127,7 +138,7 @@ contexts:
       pop: true
 
   stringTemplate:
-    - meta_scope: string.quoted.js
+    - meta_scope: string.regexp.js
     - include: constantEscape
     - match: \${
       push: templateExpressions
