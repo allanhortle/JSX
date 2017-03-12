@@ -13,19 +13,20 @@ contexts:
     - include: javascript
     - include: jsx
   
-
-
-
   #
   # JSX
   # 
+  
+  metajsx:
+    - meta_scope: meta.jsx
+    - match: ''
+      pop: true
 
   javascriptEmbedded:
     - clear_scopes: true
     - include: jsx
     - include: javascript
     - match: \}
-      # scope: entity
       pop: true
 
   jsx:
@@ -33,22 +34,25 @@ contexts:
     - include: attributes
 
   tags: 
-    - match: <
-      scope: entity.js
-      push: tag
+    - match: \s*?<[\w/]
+      scope: entity.jsx
+      set: [metajsx, tag]
 
   attributes: 
     - match: \b([a-zA-Z\-:_]+)=
-      scope: entity.js
+      scope: entity.jsx
       push: tag
 
   tag:
-    - meta_scope: entity
+    - meta_scope: entity.jsx
     - include: strings
     - match: \{
-      # scope: entity
       push: javascriptEmbedded
-    - match: \>
+    - match: '>(?=[;\)])'
+      pop: true
+    - match: '>\n'
+      pop: true
+    - match: '>'
       pop: true
 
     
@@ -113,7 +117,6 @@ contexts:
   stringTemplate:
     - meta_scope: string.quoted.js
     - match: \${
-      # scope: string.quoted.js
       push: templateExpressions
     - match: "`"
       pop: true
@@ -122,6 +125,5 @@ contexts:
     - clear_scopes: true
     - include: javascript
     - match: \}
-      # scope: string.quoted.js
       pop: true
 

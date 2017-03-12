@@ -5,7 +5,7 @@
 	<key>name</key>
 	<string>Comments</string>
 	<key>scope</key>
-	<string>source.js, source.json</string>
+	<string>source.js.jsx,source.json</string>
 	<key>settings</key>
 	<dict>
 		<key>shellVariables</key>
