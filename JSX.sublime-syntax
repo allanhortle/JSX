@@ -7,7 +7,7 @@ variables:
   reservedWords: "(break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|for|function|from|if|import|in|instanceof|new|return|super|switch|this|throw|try|typeof|var|void|while|with|yield|enum|implements|interface|let|package|private|protected|public|static|await|abstract|boolean|byte|char|double|final|float|goto|int|long|native|short|synchronized|throws|transient|volatile)"
   constantWords: "(true|false|null|Infinity|NaN|undefined)"
 
-  string: "(\"|'|`)"
+  tag: entity.name.tag.jsx
 contexts:
   main:
     - include: javascript
@@ -17,34 +17,27 @@ contexts:
   # JSX
   # 
   
-  metajsx:
-    - meta_scope: meta.jsx
-    - match: ''
-      pop: true
-
-  javascriptEmbedded:
-    - clear_scopes: true
-    - include: jsx
-    - include: javascript
-    - match: \}
-      pop: true
-
   jsx:
     - include: tags
     - include: attributes
 
   tags: 
     - match: \s*?<[\w/]
-      scope: entity.jsx
+      scope: entity.name.tag.jsx
       set: [metajsx, tag]
-
+    
   attributes: 
     - match: \b([a-zA-Z\-:_]+)=
-      scope: entity.jsx
+      scope: entity.name.tag.jsx
       push: tag
 
+  metajsx:
+    - meta_scope: meta.jsx
+    - match: ''
+      pop: true
+
   tag:
-    - meta_scope: entity.jsx
+    - meta_scope: entity.name.tag.jsx
     - include: strings
     - match: \{
       push: javascriptEmbedded
@@ -55,6 +48,12 @@ contexts:
     - match: '>'
       pop: true
 
+  javascriptEmbedded:
+    - clear_scopes: true
+    - include: jsx
+    - include: javascript
+    - match: \}
+      pop: true
     
   #
   # JS
@@ -89,15 +88,19 @@ contexts:
 
   keywords:
     - match: '\b{{reservedWords}}\b'
-      scope: keyword.control.js
+      scope: keyword.js
 
   constants:
     - match: '\b{{constantWords}}\b'
       scope: constant.language.js
     - match: '\b((0(x|X)[0-9a-fA-F]+)|([0-9]+(\.[0-9]+)?))\b'
       scope: constant.numeric.js
-    - match: (&.*;)
-      scope: constant.numeric.js
+    - match: (&.*?;)
+      scope: constant.other.js
+
+  constantEscape:
+    - match: \\.
+      scope: constant.character.escape
 
   stringSingle: 
     - meta_scope: string.quoted.js
@@ -106,16 +109,19 @@ contexts:
 
   stringDouble: 
     - meta_scope: string.quoted.js
+    - include: constantEscape
     - match: "\""
       pop: true
 
   stringRegex:
     - meta_scope: string.quoted.js
+    - include: constantEscape
     - match: "/[gimuy]?"
       pop: true
 
   stringTemplate:
     - meta_scope: string.quoted.js
+    - include: constantEscape
     - match: \${
       push: templateExpressions
     - match: "`"
