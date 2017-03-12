@@ -12,11 +12,14 @@
                 : React.cloneElement(this.state.view, this.state.props);
         }
 
-        js jsx
+        if(1 < 2) {
+
+    }
+        var rad = /sasdasd\.asdasdasd\(/g
 
 
         var string = `${steven}: other winner ${radical}`
-        return <div>asdasd</div>;
+        return <div>asdasd &amp;</div>;
 
         return <div> {asdasd} asdasd</div>;
         return (
@@ -27,7 +30,7 @@
                 onRad={ii => <div><div other={null}>{asdas}</div>{asdasd}</div>}
                 onKeyUp={this.onKeyUp}
                 rad={null}
-                ref="modalManager"
+                ref="modalManager\n &amp;"
             ><div>
                 <div className='modal' ref="modal">
                     <div className="modal_content">

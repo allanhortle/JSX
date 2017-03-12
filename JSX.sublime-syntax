@@ -29,7 +29,7 @@ contexts:
   attributes: 
     - match: \b([a-zA-Z\-:_]+)=
       scope: entity.name.tag.jsx
-      push: tag
+      push: [metajsx, tag]
 
   metajsx:
     - meta_scope: meta.jsx
@@ -39,6 +39,7 @@ contexts:
   tag:
     - meta_scope: entity.name.tag.jsx
     - include: strings
+    - include: comments
     - match: \{
       push: javascriptEmbedded
     - match: '>(?=[;\)])'
@@ -49,7 +50,7 @@ contexts:
       pop: true
 
   javascriptEmbedded:
-    - clear_scopes: true
+    - clear_scopes: 1
     - include: jsx
     - include: javascript
     - match: \}
@@ -66,6 +67,12 @@ contexts:
     - include: comments
 
   comments: 
+    - scope: comment.block.jsx
+      match: \{/\*
+      push:
+        - meta_scope: comment.block.jsx
+        - match: \*/\}
+          pop: true
     - scope: comment.block.js
       match: /\*
       push:
@@ -88,7 +95,7 @@ contexts:
 
   keywords:
     - match: '\b{{reservedWords}}\b'
-      scope: keyword.js
+      scope: keyword.control.js
 
   constants:
     - match: '\b{{constantWords}}\b'
