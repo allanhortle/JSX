@@ -137,13 +137,13 @@ contexts:
       pop: true
 
   stringRegex:
-    - meta_scope: string.quoted.js
+    - meta_scope: string.regexp.js
     - include: constantEscape
     - match: "/[gimuy]?"
       pop: true
 
   stringTemplate:
-    - meta_scope: string.regexp.js
+    - meta_scope: string.quoted.js
     - include: constantEscape
     - include: constantEntity
     - match: \${
