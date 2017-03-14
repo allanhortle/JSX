@@ -103,8 +103,10 @@ contexts:
             )(e[-+]?[0-9]+)?            # e.g. e+123, E-123
           )
       scope: constant.numeric.js
-    - match: (&.*?;)
-      scope: constant.other.js
+
+  constantEntity:
+    - match: (&[\w#]*?;)
+      scope: constant.other.js    
 
   constantEscape:
     - match: \\.
@@ -122,12 +124,15 @@ contexts:
 
   stringSingle: 
     - meta_scope: string.quoted.js
+    - include: constantEscape
+    - include: constantEntity
     - match: "'"
       pop: true
 
   stringDouble: 
     - meta_scope: string.quoted.js
     - include: constantEscape
+    - include: constantEntity
     - match: "\""
       pop: true
 
@@ -140,6 +145,7 @@ contexts:
   stringTemplate:
     - meta_scope: string.regexp.js
     - include: constantEscape
+    - include: constantEntity
     - match: \${
       push: templateExpressions
     - match: "`"
