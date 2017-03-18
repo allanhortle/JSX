@@ -39,6 +39,7 @@ contexts:
       push: 
         - clear_scopes: true
         - meta_scope: source.js.jsx meta.jsx 
+        - include: constantEntity
         - include: comments
         - match: \{
           scope: entity.name.tag.jsx
@@ -180,6 +181,7 @@ contexts:
   templateExpressions:
     - clear_scopes: true
     - include: javascript
+    - include: jsx
     - match: \}
       scope: string.quoted.js
       pop: true
