@@ -34,3 +34,36 @@ open up `Preferences > Key Bindings - user` and add this entry:
             { "key": "has_next_field", "operator": "equal", "operand": true }
         ]
     }
+
+
+# Scope Naming
+
+```js
+
+// Keywords
+keyword.control.js // js reserved words
+
+// Entities
+entity.name.tag.jsx // JSX
+entity.name.type // types
+
+// Constants
+constant.character.escape // escaped characters
+constant.language.js // true/false/undefined...
+constant.numeric.js // numbers
+constant.other.js // html entities
+
+// Strings
+string.quoted.js
+string.regexp.js
+
+// Comments
+comment.block.js // block.comments
+comment.block.jsx // jsx comments
+comment.line.js // line comments
+
+// Meta
+source.js.jsx // main file
+meta.jsx // jsx
+
+```

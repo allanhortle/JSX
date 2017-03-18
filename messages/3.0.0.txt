@@ -1,0 +1,9 @@
+JSX 3.0.0 - Rewrite
+===================
+
+* Completely re-written in ST3's new `.sublime-syntax` (Sorry ST2)
+* Fixed the problems around nesting JSX in JSX (It's way more robust) (Pesky quotes wont break everything)
+* Cleaned up syntax scope naming to be closer to: https://www.sublimetext.com/docs/3/scope_naming.html (Check the readme for more infomation)
+
+Be sure to make issues (or shout at me) for broken things:
+https://github.com/allanhortle/JSX/issues
