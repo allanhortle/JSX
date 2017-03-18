@@ -57,7 +57,7 @@ contexts:
 
   javascriptEmbedded:
     - clear_scopes: true
-    - meta_scope: meta.embedded.js
+    - meta_scope: source.js.jsx
     - include: jsx
     - include: javascript
 
@@ -70,7 +70,7 @@ contexts:
   
   jsEmbeddedInner:
     - clear_scopes: true
-    - meta_scope: meta.embedded.js
+    - meta_scope: source.js.jsx
     - include: jsx
     - include: javascript
 
