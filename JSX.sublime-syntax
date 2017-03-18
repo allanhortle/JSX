@@ -9,7 +9,6 @@ variables:
   tagStart: '<(?=\w)'
 contexts:
   main:
-    - include: flow
     - include: javascript
     - include: jsx
   
@@ -87,6 +86,7 @@ contexts:
   # 
   
   javascript: 
+    - include: flow
     - include: keywords
     - include: constants
     - include: strings
@@ -185,7 +185,7 @@ contexts:
       pop: true
 
   flow: 
-    - match: (?::\s*)([\w\[\]\<\>\.]*)\s*(?:[\)={])
+    - match: (?<=[\w\)])(?::\s*)([\w\[\]\<\>\.]*)\s*(?=[;\)={])
       captures:
         1: entity.name.type
 
