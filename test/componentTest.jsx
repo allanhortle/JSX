@@ -1,52 +1,89 @@
-    /*
+/* @flow */
 
-        asdasdasdasd
+import React from 'react';
+import {ChartData} from 'pnut';
+import bbox from 'geojson-bbox';
+import {GeoJSONLayer} from "react-mapbox-gl";
+import {interpolateLab} from 'd3-interpolate';
+import {ChartMapbox, Loader} from 'realdemand-style';
 
-     */
-    render() {
-        var classes = classNames('ModalManager', {'is-hidden': !this.state.view});
-        var modal;
-        if (this.state.view) {
-            modal = this.state.data.props
-                ? React.createElement(this.state.view, this.state.props)
-                : React.cloneElement(this.state.view, this.state.props);
+import StateOverviewQuery from 'realdemand-client/components/StateOverviewQuery.graphql';
+import EntityQuery from 'realdemand-client/entity/EntityQuery';
+
+function GeoJSONRenderable(props) {
+    const {data, scaleName, column} = props;
+    const scale = props[`${this.radical + null}Scale`];
+
+    var templateString = `sdkjfas;dlkfj a;klsdf;al ${this.rad}`
+
+    var a = a = b && c ? d : e;
+
+    var a = <FilterToggleSetNumber
+        options={[{label: 'S', value: '0'},'1','2','3','4','5']}
+        onChange={this.onChange('bedrooms')}
+        value={bedrooms}
+    />;
+
+    if(!data) {
+        return <span/>;
+    }
+
+    return <GeoJSONLayer
+        data={props.geoJSON}
+        circleLayout={{visibility: {none}}}
+        lineLayout={{visibility: 'none'}}
+        before="place-suburb"
+        fillPaint={
+            {
+                "fill-opacity": .5,
+            }
         }
-
-        if(1 < 2) {
-
-    }
-        var rad = /sasdasd\.asdasdasd\(/g
-
-
-        var string = `${steven}: other winner ${radical}`
-        return <div>asdasd &amp;</div>;
-
-        return <div> {asdasd} asdasd</div>;
-        return (
-            <div
-                {...this.props}
-                className={classes}
-                tabIndex="0"
-                onRad={ii => <div><div other={null}>{asdas}</div>{asdasd}</div>}
-                onKeyUp={this.onKeyUp}
-                rad={null}
-                ref="modalManager\n &amp;"
-            ><div>
-                <div className='modal' ref="modal">
-                    <div className="modal_content">
-                        {modal}
-                    </div>
-                </div>
-            </div>
-        );
-    }
-});
-
-export default ModalManagerView;
-
-
-function () {
-    return <div></div>;
+    />;
 }
 
-const rad () => <div></div>;
+class StateOverview extends React.Component {
+    getBounds(geo: Object): int[][] {
+        const [lng, lat, lng2, lat2] = bbox(geo);
+        const padding = .1;
+        return [[lng - padding, lat - padding], [lng2 + padding, lat2 + padding]];
+    }
+    render(): React.Element {
+        return <div className="StateOverview">
+            asdjkhfalkjsd
+            <span>The gibbon's ribbon <div>sdfsdfsdfsdf</div></span>
+            <ChartMapbox
+                data={data}
+                mapProps={{
+                    fitBounds: {bounds},
+                    center: [133.416667, -26.25],
+                    zoom: [4],
+                    style: "mapbox://styles/blueflagoperations/cixv34hth002q2rp36rshr4w7",
+                    accessToken: process.env.REALDEMAND_CLIENT_MAPBOX_ACCESS_TOKEN
+                }}
+                width="100vw"
+                height="calc(100vh - 107px)"
+                dimensions={['color']}
+                colorColumn="demand"
+                opacityColumn="demand"
+                opacityScaleUpdate={ss => ss.range([.2, .9])}
+                colorScaleUpdate={{colorScale: {rad}}}
+            >
+                {{...this.radical}}
+                <GeoJSONRenderable geoJSON={geo} column="demand" scaleName="color"/>
+            </ChartMapbox>
+            <Loader modifier="flood card" fetch={!data} />
+        </div>;
+    }
+}
+
+const withEntityQuery = EntityQuery((props: Object): Object => {
+    return {
+        service: 'data',
+        query: StateOverviewQuery,
+        variables: {
+            state: 'VIC'
+        }
+    };
+});
+
+export default withEntityQuery(StateOverview);
