@@ -5,6 +5,7 @@ file_extensions: [jsx]
 scope: source.js.jsx
 variables:
   reservedWords: "(break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|for|function|from|if|import|in|instanceof|new|return|super|switch|this|throw|try|typeof|var|void|while|with|yield|enum|implements|interface|let|package|private|protected|public|static|await|abstract|boolean|byte|char|double|final|float|goto|int|long|native|short|synchronized|throws|transient|volatile)"
+  typeWords: "(type|declare)"
   constantWords: "(true|false|null|Infinity|NaN|undefined)"
   tagStart: '<(?=\w)'
 contexts:
@@ -112,6 +113,8 @@ contexts:
 
   keywords:
     - match: '\b{{reservedWords}}\b'
+      scope: keyword.control.js 
+    - match: '\b{{typeWords}}\b'
       scope: keyword.control.js
 
   constants:

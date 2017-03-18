@@ -1,14 +1,13 @@
-JSX-SublimeText
-===============
+# JSX-SublimeText
 
 Language Definitions for JSX files.
 
 
 
 
-Emmet Support
--------------
-Emmet's default is to not support JS files. So you will need to add a keyboard shortcut to tab complete in JSX files.
+## Emmet Support
+
+You will need to add a keyboard shortcut to tab complete in JSX files.
 
 open up `Preferences > Key Bindings - user` and add this entry:
 
@@ -36,8 +35,26 @@ open up `Preferences > Key Bindings - user` and add this entry:
     }
 
 
-# Scope Naming
+## Scope Naming
 
+https://www.sublimetext.com/docs/3/scope_naming.html
+
+JSX-SublimeText chooses to have a slim scope surface area. (Over naming of scopes makes the syntax overly specific and hard on color schemes.)
+There are 5 main areas of scope: Keywords, Entities, Constants, Strings & Comments. 
+
+### Keywords
+JSX-SublimeText opts to keep all javascript reserved words under one scope so as to distinguish between the js lanugage and the code.
+
+### Entities
+> The entity scopes are generally assigned to the names of data structures, types and other uniquely-identifiable constructs in code and markup.
+
+JSX-SublimeText only makes two entity assignments. First to the actual jsx/xml sections (entity.name.tag) and second to flow/ts type declarations (entity.name.type).
+
+
+### Issues & Problems
+The line between specific/general syntax highlighting seems to be a bit of personal one. Due to my personal favouring of less rather than more JSX-SublimeText is simpler back than other JS/JSX syntaxes. If you find a part of the syntax is breaking your color scheme or you don't like a choice please feel free to open an issue. I'm more than happy to be told I'm wrong or convinced of a better way. 
+
+### Reference
 ```js
 
 // Keywords
