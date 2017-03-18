@@ -40,7 +40,7 @@ contexts:
     - meta_scope: entity.name.tag.jsx
     - include: strings
     - include: comments
-    - match: \{
+    - match: (?<=\{)
       push: javascriptEmbedded
     - match: '>(?=[;\)])'
       pop: true
@@ -51,9 +51,27 @@ contexts:
 
   javascriptEmbedded:
     - clear_scopes: 1
+    - meta_scope: meta.embedded.js
     - include: jsx
     - include: javascript
-    - match: \}(\s*?)([\}]+)?
+
+    - match: '\{'
+      push: jsEmbeddedInner
+
+    - match: '\}'
+      scope: entity.name.tag.jsx
+      pop: true
+  
+  jsEmbeddedInner:
+    - clear_scopes: 1
+    - meta_scope: meta.embedded.js
+    - include: jsx
+    - include: javascript
+
+    - match: '\{'
+      push: jsEmbeddedInner
+
+    - match: '\}'
       pop: true
     
   #
@@ -146,7 +164,7 @@ contexts:
     - meta_scope: string.quoted.js
     - include: constantEscape
     - include: constantEntity
-    - match: \${
+    - match: (?<=\${)
       push: templateExpressions
     - match: "`"
       pop: true
@@ -155,5 +173,6 @@ contexts:
     - clear_scopes: true
     - include: javascript
     - match: \}
+      scope: string.quoted.js
       pop: true
 
