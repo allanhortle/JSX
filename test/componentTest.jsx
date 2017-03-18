@@ -10,7 +10,7 @@ import {ChartMapbox, Loader} from 'realdemand-style';
 import StateOverviewQuery from 'realdemand-client/components/StateOverviewQuery.graphql';
 import EntityQuery from 'realdemand-client/entity/EntityQuery';
 
-function GeoJSONRenderable(props) {
+function GeoJSONRenderable(props: Object): React.Element<any> {
     const {data, scaleName, column} = props;
     const scale = props[`${this.radical + null}Scale`];
 
@@ -41,24 +41,31 @@ function GeoJSONRenderable(props) {
     />;
 }
 
+{/*Map<asd,asd>*/}
+
 class StateOverview extends React.Component {
     getBounds(geo: Object): int[][] {
+
+        var rad: string = 'winner';
+
         const [lng, lat, lng2, lat2] = bbox(geo);
         const padding = .1;
         return [[lng - padding, lat - padding], [lng2 + padding, lat2 + padding]];
     }
-    render(): React.Element {
+    render(): React.Element<any> {
         return <div className="StateOverview">
+            <span/>
             asdjkhfalkjsd
             <span>The gibbon's ribbon <div>sdfsdfsdfsdf</div></span>
             <ChartMapbox
+                other={<Button>asdasd</Button>}
                 data={data}
                 mapProps={{
                     fitBounds: {bounds},
                     center: [133.416667, -26.25],
                     zoom: [4],
                     style: "mapbox://styles/blueflagoperations/cixv34hth002q2rp36rshr4w7",
-                    accessToken: process.env.REALDEMAND_CLIENT_MAPBOX_ACCESS_TOKEN
+                    accessToken: pro/cess.env.REALDEMAND_CLIENT_MAPBOX_ACCESS_TOKEN
                 }}
                 width="100vw"
                 height="calc(100vh - 107px)"

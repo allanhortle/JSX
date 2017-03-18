@@ -7,7 +7,6 @@ variables:
   reservedWords: "(break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|for|function|from|if|import|in|instanceof|new|return|super|switch|this|throw|try|typeof|var|void|while|with|yield|enum|implements|interface|let|package|private|protected|public|static|await|abstract|boolean|byte|char|double|final|float|goto|int|long|native|short|synchronized|throws|transient|volatile)"
   constantWords: "(true|false|null|Infinity|NaN|undefined)"
   tagStart: '<(?=\w)'
-  tag: entity.name.tag.jsx
 contexts:
   main:
     - include: flow
@@ -37,10 +36,10 @@ contexts:
     - match: (?<=\{)
       push: javascriptEmbedded
 
-    - match: '(?<=\>)(?!<)'
+    - match: '(?<=\>)(?!\s*?[<}])'
       push: 
         - clear_scopes: true
-        - meta_scope: meta.jsx
+        - meta_scope: source.js.jsx meta.jsx 
         - include: comments
         - match: \{
           scope: entity.name.tag.jsx
@@ -189,6 +188,4 @@ contexts:
     - match: (?::\s*)([\w\[\]\<\>\.]*)\s*(?:[\)={])
       captures:
         1: entity.name.type
-    - match: <\w*(,\w*)*>
-      scope: entity.name.type
 
