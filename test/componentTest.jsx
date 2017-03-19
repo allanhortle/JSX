@@ -14,9 +14,13 @@ function GeoJSONRenderable(props: Object): React.Element<any> {
     const {data, scaleName, column} = props;
     const scale = props[`${this.radical + null}Scale`];
 
-    var templateString = `sdkjfas;dlkfj a;klsdf;al ${this.rad}`
+    var templateString = `sdkjfas;dlkfj a;klsdf;al ${this.rad + <div>{asdasdas}</div>}`
 
     var a = a = b && c ? d : e;
+
+    const bar: Object = {};
+
+    return (rad > 0) ? this : that;
 
     var a = <FilterToggleSetNumber
         options={[{label: 'S', value: '0'},'1','2','3','4','5']}
@@ -44,9 +48,15 @@ function GeoJSONRenderable(props: Object): React.Element<any> {
 {/*Map<asd,asd>*/}
 
 class StateOverview extends React.Component {
+    onClick: Function;
+
     getBounds(geo: Object): int[][] {
 
         var rad: string = 'winner';
+
+        return <div>
+            asdasd
+        </div>;
 
         const [lng, lat, lng2, lat2] = bbox(geo);
         const padding = .1;
@@ -58,10 +68,11 @@ class StateOverview extends React.Component {
             asdjkhfalkjsd
             <span>The gibbon's ribbon <div>sdfsdfsdfsdf</div></span>
             <ChartMapbox
-                other={<Button>asdasd</Button>}
+                other={<Button something={<div>asdasd div</div>}>asdasd</Button>}
                 data={data}
                 mapProps={{
-                    fitBounds: {bounds},
+                    props: (pp: Object): string => pp.string.toLowerCase()
+                    fitBounds: {bounds}
                     center: [133.416667, -26.25],
                     zoom: [4],
                     style: "mapbox://styles/blueflagoperations/cixv34hth002q2rp36rshr4w7",
@@ -75,7 +86,7 @@ class StateOverview extends React.Component {
                 opacityScaleUpdate={ss => ss.range([.2, .9])}
                 colorScaleUpdate={{colorScale: {rad}}}
             >
-                {{...this.radical}}
+                {...this.radical}
                 <GeoJSONRenderable geoJSON={geo} column="demand" scaleName="color"/>
             </ChartMapbox>
             <Loader modifier="flood card" fetch={!data} />

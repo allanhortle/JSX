@@ -136,7 +136,7 @@ contexts:
 
   constantEntity:
     - match: (&[\w#]*?;)
-      scope: constant.other.js    
+      scope: constant.character.entity.html  
 
   constantEscape:
     - match: \\.

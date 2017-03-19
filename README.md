@@ -3,8 +3,6 @@
 Language Definitions for JSX files.
 
 
-
-
 ## Emmet Support
 
 You will need to add a keyboard shortcut to tab complete in JSX files.
@@ -68,7 +66,7 @@ entity.name.type // types
 constant.character.escape // escaped characters
 constant.language.js // true/false/undefined...
 constant.numeric.js // numbers
-constant.other.js // html entities
+constant.character.entity.html // html character entities
 
 // Strings
 string.quoted.js

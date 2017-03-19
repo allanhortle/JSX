@@ -1,5 +1,5 @@
 JSX - Syntax & Autocomplete
 ===========================
 
-Be sure to make issues (or shout at me) for missing/broken things:
+Be sure to make issues (or shout at me) for broken things:
 https://github.com/allanhortle/JSX/issues
