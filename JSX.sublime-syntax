@@ -169,7 +169,7 @@ contexts:
   stringRegex:
     - meta_scope: string.regexp.js
     - include: constantEscape
-    - match: \/[gimuy]?$
+    - match: \/[gimuy]?
       pop: true
 
   stringTemplate:
