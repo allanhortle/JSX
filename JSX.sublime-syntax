@@ -169,7 +169,8 @@ contexts:
   stringRegex:
     - meta_scope: string.regexp.js
     - include: constantEscape
-    - match: \/[gimuy]?
+    # Match ending slash and flag but only if not in a [] character class
+    - match: '\/[gimuy]?(?!.*\])'
       pop: true
 
   stringTemplate:
@@ -190,7 +191,7 @@ contexts:
       pop: true
 
   flow: 
-    - match: (?<=[\w\)])(?::\s*)([\w\[\]\<\>\.]*)\s*(?=[;\)={])
+    - match: '(?<=[\w\)])(?::\s*)([\w\[\]<>.*,]*)\s*(?=[;\)={])'
       captures:
         1: entity.name.type
 
