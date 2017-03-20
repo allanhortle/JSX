@@ -207,6 +207,9 @@ contexts:
     - match: '\('
       push: flowFunctionParams
 
+    # type/declare
+    - match: '(?<=type|declare)\s*\w*\s*=\s*{'
+      push: flowTypeDeclarations
 
     
     # Variables
@@ -233,5 +236,18 @@ contexts:
     - match: '\('
       push: flowFunctionParams
     - match: '(?=\))'
+      pop: true
+    - match: '{'
+      push: 
+        - meta_scope: meta.object
+        - include: javascript
+        - match: '}'
+          pop: true
+
+  flowTypeDeclarations:
+    - meta_scope: meta.type.js
+    - match: '{{typeParams}}'
+      scope: entity.name.type
+    - match: '}'
       pop: true
 
