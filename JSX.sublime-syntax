@@ -203,15 +203,12 @@ contexts:
     - match: '\):'
       push: flowFunctionReturns
 
-    # Function params
     - match: '\('
       push: flowFunctionParams
 
-    # type/declare
     - match: '(?<=type|declare)\s*\w*\s*=\s*{'
       push: flowTypeDeclarations
 
-    
     # Variables
     - match: '(?<=const|let|var)(?:\s*\w*:\s*)(\w*)\s*='
       captures:
@@ -230,19 +227,19 @@ contexts:
     
   flowFunctionParams:
     - meta_scope: meta.type.js
-    - include: javascript
     - match: '{{typeParams}}'
       scope: entity.name.type
-    - match: '\('
-      push: flowFunctionParams
     - match: '(?=\))'
       pop: true
+    - match: '\('
+      push: flowFunctionParams
     - match: '{'
       push: 
         - meta_scope: meta.object
         - include: javascript
         - match: '}'
           pop: true
+    - include: javascript
 
   flowTypeDeclarations:
     - meta_scope: meta.type.js
