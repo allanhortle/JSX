@@ -8,7 +8,8 @@ variables:
   typeWords: "(type|declare)"
   constantWords: "(true|false|null|Infinity|NaN|undefined)"
   tagStart: '<(?=\w)'
-  validType: '([\w\[\]\<\>\.]*)'
+  validType: '([\?\w\[\]\.\*]*(?:<.*?>)?)'
+  typeParams: '(?<=:)\s*({{validType}})(?=[,\)\}\s=])'
 contexts:
   main:
     - include: javascript
@@ -199,21 +200,38 @@ contexts:
       captures:
         1: entity.name.type
 
-    # Function returns
-    # ): THEN type THEN => OR { 
-    - match: '(?<=\):)\s*({{validType}})(?=\s*(=>|{))'
-      scope: entity.name.type
+    - match: '\):'
+      push: flowFunctionReturns
 
     # Function params
     - match: '\('
-      push:
-        - match: (?<=:)\s*({{validType}})(?=[,\)\s=])
-          scope: entity.name.type
-        - match: '\)'
-          pop: true
+      push: flowFunctionParams
+
+
     
     # Variables
     - match: '(?<=const|let|var)(?:\s*\w*:\s*)(\w*)\s*='
       captures:
         1: entity.name.type
+
+  flowFunctionReturns:
+    - meta_scope: meta.type.js
+    - match: '{{typeParams}}'
+      scope: entity.name.type
+    - match: '{$'
+      pop: true
+    - match: '(?={return)'
+      pop: true
+    - match: '(?=\=>)'
+      pop: true
+    
+  flowFunctionParams:
+    - meta_scope: meta.type.js
+    - include: javascript
+    - match: '{{typeParams}}'
+      scope: entity.name.type
+    - match: '\('
+      push: flowFunctionParams
+    - match: '(?=\))'
+      pop: true
 
