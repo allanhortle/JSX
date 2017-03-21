@@ -196,7 +196,7 @@ contexts:
   flow: 
     # class types
     # ONLY space SOME word THEN : THEN type THEN ;
-    - match: '^\s*\w+:\s*(\w*)(?=;)'
+    - match: '^\s*\w+:\s*{{validType}}(?=;)'
       captures:
         1: entity.name.type
 
@@ -210,7 +210,7 @@ contexts:
       push: flowTypeDeclarations
 
     # Variables
-    - match: '(?<=const|let|var)(?:\s*\w*:\s*)(\w*)\s*='
+    - match: '(?<=const|let|var)(?:\s*\w*:\s*){{validType}}\s*='
       captures:
         1: entity.name.type
 
