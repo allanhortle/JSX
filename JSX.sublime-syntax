@@ -9,7 +9,7 @@ variables:
   constantWords: "(true|false|null|Infinity|NaN|undefined)"
   tagStart: '<(?=\w)'
   validType: '([\?\w\[\]\.\*]*(?:<.*?>)?)'
-  typeParams: '(?<=:)\s*({{validType}})(?=[,\)\}\s=])'
+  typeParams: '(?<=[:|])\s*({{validType}})'
 contexts:
   main:
     - include: javascript
@@ -206,7 +206,7 @@ contexts:
     - match: '\('
       push: flowFunctionParams
 
-    - match: '(?<=type|declare)\s*\w*\s*=\s*{'
+    - match: '(?<=type|declare)\s*\w*\s*='
       push: flowTypeDeclarations
 
     # Variables
@@ -226,7 +226,7 @@ contexts:
       pop: true
     
   flowFunctionParams:
-    - meta_scope: meta.type.js
+    - meta_scope: meta.type.flowFunctionParams.js
     - match: '{{typeParams}}'
       scope: entity.name.type
     - match: '(?=\))'
@@ -235,16 +235,25 @@ contexts:
       push: flowFunctionParams
     - match: '{'
       push: 
-        - meta_scope: meta.object
         - include: javascript
-        - match: '}'
+        - match: '(?=})'
           pop: true
     - include: javascript
 
   flowTypeDeclarations:
     - meta_scope: meta.type.js
-    - match: '{{typeParams}}'
+    - match: '{{validType}}'
       scope: entity.name.type
+    - match: '\('
+      push: flowFunctionParams
+    - match: '{'
+      push: 
+        - match: '{{typeParams}}'
+          scope: entity.name.type
+        - match: '(?=})'
+          pop: true
+    - match: ';'
+      pop: true
     - match: '}'
       pop: true
 
