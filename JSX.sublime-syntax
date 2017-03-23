@@ -9,7 +9,7 @@ variables:
   constantWords: "(true|false|null|Infinity|NaN|undefined)"
   tagStart: '<(?=\w)'
   validType: '([\?\w\[\]\.\*]*(?:<.*?>)?)'
-  typeParams: '(?<=[:|])\s*({{validType}})'
+  typeParams: '(?<=[:])\s*({{validType}})'
 contexts:
   main:
     - include: javascript
@@ -203,7 +203,7 @@ contexts:
     - match: '\):'
       push: flowFunctionReturns
 
-    - match: '\('
+    - match: '(?<!return\ )\('
       push: flowFunctionParams
 
     - match: '(?<=type|declare)\s*\w*\s*='
