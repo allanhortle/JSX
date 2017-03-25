@@ -1,107 +1,87 @@
+
 /* @flow */
+/* eslint-disable no-unused-vars */
 
-import React from 'react';
-import {ChartData} from 'pnut';
-import bbox from 'geojson-bbox';
-import {GeoJSONLayer} from "react-mapbox-gl";
-import {interpolateLab} from 'd3-interpolate';
-import {ChartMapbox, Loader} from 'realdemand-style';
+// import {List} from 'immutable';
 
-import StateOverviewQuery from 'realdemand-client/components/StateOverviewQuery.graphql';
-import EntityQuery from 'realdemand-client/entity/EntityQuery';
+type ClassName = string;
 
-function GeoJSONRenderable(props: Object): React.Element<any> {
-    const {data, scaleName, column} = props;
-    const scale = props[`${this.radical + null}Scale`];
+// type HockApplier = (ComposedComponent: ReactClass<any>) => ReactClass<any>;
 
-    var templateString = `sdkjfas;dlkfj a;klsdf;al ${this.rad + <div>{asdasdas}</div>}`
+type HtmlProps = Object;
 
-    var a = a = b && c ? d : e;
+type ListOrArray = List<*> | Array<any>;
 
-    const bar: Object = {};
+type SpruceModifier = string | Object;
 
-    return (rad > 0) ? this : that;
-
-    var a = <FilterToggleSetNumber
-        options={[{label: 'S', value: '0'},'1','2','3','4','5']}
-        onChange={this.onChange('bedrooms')}
-        value={bedrooms}
-    />;
-
-    if(!data) {
-        return <span/>;
-    }
-
-    return <GeoJSONLayer
-        data={props.geoJSON}
-        circleLayout={{visibility: {none}}}
-        lineLayout={{visibility: 'none'}}
-        before="place-suburb"
-        fillPaint={
-            {
-                "fill-opacity": .5,
-            }
-        }
-    />;
+type OnChangeMeta = {
+    event: Object,
+    element: Object
 }
 
-{/*Map<asd,asd>*/}
 
-class StateOverview extends React.Component {
-    onClick: Function;
+rad({
+    type: asdasd
+})
+type OnChange = (newValue: string|Number, meta: OnChangeMeta) => void;
 
-    getBounds(geo: Object): int[][] {
+type OnChangeBoolean = (newValue: boolean, meta: OnChangeMeta) => void;
 
-        var rad: string = 'winner';
+type OnChangeMulti = (newValues: Array<string>|string, meta: ?OnChangeMeta) => void;
 
-        return <div>
-            asdasd
-        </div>;
+type OnClick = (event: Object) => void;
 
-        const [lng, lat, lng2, lat2] = bbox(geo);
-        const padding = .1;
-        return [[lng - padding, lat - padding], [lng2 + padding, lat2 + padding]];
+
+class rad extends React.Component {
+    render(name: string, other: Map<*,string>): React.Element<any> {
+        return (name: string) => asdasd
     }
-    render(): React.Element<any> {
-        return <div className="StateOverview">
-            <span/>
-            asdjkhfalkjsd
-            <span>The gibbon's ribbon <div>sdfsdfsdfsdf</div></span>
-            <ChartMapbox
-                other={<Button something={<div>asdasd div</div>}>asdasd</Button>}
-                data={data}
-                mapProps={{
-                    props: (pp: Object): string => pp.string.toLowerCase()
-                    fitBounds: {bounds}
-                    center: [133.416667, -26.25],
-                    zoom: [4],
-                    style: "mapbox://styles/blueflagoperations/cixv34hth002q2rp36rshr4w7",
-                    accessToken: pro/cess.env.REALDEMAND_CLIENT_MAPBOX_ACCESS_TOKEN
-                }}
-                width="100vw"
-                height="calc(100vh - 107px)"
-                dimensions={['color']}
-                colorColumn="demand"
-                opacityColumn="demand"
-                opacityScaleUpdate={ss => ss.range([.2, .9])}
-                colorScaleUpdate={{colorScale: {rad}}}
-            >
-                {...this.radical}
-                <GeoJSONRenderable geoJSON={geo} column="demand" scaleName="color"/>
-            </ChartMapbox>
-            <Loader modifier="flood card" fetch={!data} />
-        </div>;
+    other() {
+
     }
 }
 
-const withEntityQuery = EntityQuery((props: Object): Object => {
+var rad = function(name: string) {
+
+}
+
+
+
+function rad(name: string = 'asdasd', other: Map<*,string>): React.Element<any> {
+    return function rad(name: string, other: Map<*,string>): React.Element<any> {
+    }
+}
+sdfsdf
+var rad = (name: {rad: String}, other: Map<*,string>): Object => 'rad';
+var rad = cool((name: string, other: Map<*,string>): Object => 'rad').rad();
+var rad = array
+    .map((name: string, other: Map<*,string>): Object => 'rad')
+    .map((name: string, other: Map<*,string>): Object => steve.rad().cool())
+    .toString();
+    
+
+rad({
+    object: {
+        asdasd: String
+    }
+})
+
+var rad = 'cool';
+
+var rad = (name: string, other: Map<*,string>): React.Element<any> => {
+    return 'rad'
+}
+
+export default function rad({
+    name = 'asdasd',
+    other = {},
+    num = 123
+}: {
+    name: string,
+    other: Object,
+    num: number,
+}) {
     return {
-        service: 'data',
-        query: StateOverviewQuery,
-        variables: {
-            state: 'VIC'
-        }
-    };
-});
-
-export default withEntityQuery(StateOverview);
+        asdasd: string
+    }
+}

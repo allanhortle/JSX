@@ -8,13 +8,13 @@ variables:
   typeWords: "(type|declare)"
   constantWords: "(true|false|null|Infinity|NaN|undefined)"
   tagStart: '<(?=\w)'
-  validType: '([\?\w\[\]\.\*]*(?:<.*?>)?)'
-  typeParams: '(?<=[:])\s*({{validType}})'
+  validTypeSingle: '[\?\w\[\]\.\*]*(<.*?>)?'
+  validType: '{{validTypeSingle}}(\s*\|\s*{{validTypeSingle}})*'
+  typeParams: '(?<=:)\s*{{validType}}'
 contexts:
   main:
     - include: javascript
-    - include: jsx
-
+    # - include: jsx
   
   #
   # JSX
@@ -91,11 +91,12 @@ contexts:
   # 
   
   javascript: 
-    - include: flow
+    - include: types
     - include: keywords
     - include: constants
     - include: strings
     - include: comments
+    # - include: bracketsGroup
 
   comments: 
     - scope: comment.block.jsx
@@ -117,7 +118,8 @@ contexts:
   keywords:
     - match: '\b{{reservedWords}}\b'
       scope: keyword.control.js 
-    - match: '\b{{typeWords}}\b'
+    # - match: '^\s*{{typeWords}}\s'
+    - match: '^\s*{{typeWords}}\b(?![:])'
       scope: keyword.control.js
 
   constants:
@@ -193,67 +195,147 @@ contexts:
       scope: string.quoted.js
       pop: true
 
-  flow: 
-    # class types
-    # ONLY space SOME word THEN : THEN type THEN ;
-    - match: '^\s*\w+:\s*{{validType}}(?=;)'
-      captures:
-        1: entity.name.type
-
-    - match: '\):'
-      push: flowFunctionReturns
-
-    - match: '(?<!return\ )\('
-      push: flowFunctionParams
-
-    - match: '(?<=type|declare)\s*\w*\s*='
-      push: flowTypeDeclarations
+  types: 
+    - include: functionDeclarations
+    - include: arrowFunctionDeclarations
+    - include: classDeclaration
 
     # Variables
-    - match: '(?<=const|let|var)(?:\s*\w*:\s*){{validType}}\s*='
+    - match: '(?<=const|let|var)(?:\s*\w*:\s*)({{validType}})\s*='
       captures:
         1: entity.name.type
 
-  flowFunctionReturns:
-    - meta_scope: meta.type.js
-    - match: '{{typeParams}}'
-      scope: entity.name.type
-    - match: '{$'
-      pop: true
-    - match: '(?={return)'
-      pop: true
-    - match: '(?=\=>)'
-      pop: true
     
-  flowFunctionParams:
-    - meta_scope: meta.type.flowFunctionParams.js
-    - match: '{{typeParams}}'
-      scope: entity.name.type
-    - match: '(?=\))'
-      pop: true
-    - match: '\('
-      push: flowFunctionParams
-    - match: '{'
+    # class
+  classDeclaration:
+    - match: class
+      scope: keyword.control.js
+      push:
+        - match: \{
+          push: 
+
+            - include: classBrackets
+            - include: javascript
+            - match: '^\s*\w+:\s*({{validType}})(?=;)'
+              captures:
+                1: entity.name.type
+
+            - match: \w*\(
+              push: 
+                - meta_scope: meta.function.declaration
+                - include: typeFunctionDeclaration
+                - include: typeFunctionReturns
+                - include: functionDeclarations
+                - include: javascript
+                - match: "(?={)"
+                  pop: true
+
+            - match: "}"
+              pop: true
+
+        - match: "}"
+          pop: true
+  
+  classBrackets:
+    - match: "{"
       push: 
         - include: javascript
-        - match: '(?=})'
+        - include: classBrackets
+        - match: "}"
           pop: true
-    - include: javascript
 
-  flowTypeDeclarations:
-    - meta_scope: meta.type.js
-    - match: '{{validType}}'
-      scope: entity.name.type
-    - match: '\('
-      push: flowFunctionParams
-    - match: '{'
+  functionDeclarations:
+    # function
+    - match: '(?<=function)[\s\w]*(?=\()'
       push: 
+        - meta_scope: meta.function.declaration
+        # - include: functionBrackets
+        - include: typeFunctionDeclaration
+        - include: typeFunctionReturns
+        - include: javascript
+        - match: "{"
+          pop: true
+
+  arrowFunctionDeclarations:
+
+    # arrow function
+    - match: '\((?=\w.*=>)'
+      push: 
+        - meta_scope: meta.function.declaration
+        - include: arrowFunctionDeclarations
+        - include: typeFunctionDeclaration
+        - include: typeFunctionReturns
+        - include: javascript
+        - match: "=>"
+          pop: true
+
+    
+    # # class types
+    # # ONLY space SOME word THEN : THEN type THEN ;
+    # - match: '^\s*\w+:\s*{{validType}}(?=;)'
+    #   captures:
+    #     1: entity.name.type
+
+    # - match: '\):'
+    #   push: flowFunctionReturns
+
+    # - match: '(?<!return\ )\('
+    #   push: flowFunctionParams
+
+    # - match: '(?<=type|declare)\s*\w*\s*='
+    #   push: flowTypeDeclarations
+
+    
+  
+  typeFunctionDeclaration:
+    - match: '(?<!return\ )\('
+      push: 
+        - meta_scope: meta.type.flowFunctionParams.js
+        - include: javascript
         - match: '{{typeParams}}'
           scope: entity.name.type
-        - match: '(?=})'
+        - match: '(?=\))'
           pop: true
-    - match: ';'
-      pop: true
-    - match: '}'
-      pop: true
+
+
+  typeFunctionReturns:
+    - meta_scope: meta.type.js
+    - match: '{{typeParams}}'
+      scope: entity.name.type
+    - match: '{{typeParams}}\s(?={)'
+      scope: entity.name.type
+    # - match: '{$'
+    #   pop: true
+    # - match: '(?={return)'
+    #   pop: true
+    # - match: '(?=\=>)'
+    #   pop: true
+    
+  # flowFunctionParams:
+    
+  #   # - match: '\('
+  #   #   push: flowFunctionParams
+  #   # - match: '{'
+  #   #   push: 
+  #   #     - include: javascript
+  #   #     - match: '(?=})'
+  #   #       pop: true
+  #   - include: javascript
+
+  # flowTypeDeclarations:
+  #   - meta_scope: meta.type.js
+  #   - match: '{{validType}}'
+  #     scope: entity.name.type
+  #   - match: '\('
+  #     push: flowFunctionParams
+  #   - match: '{'
+  #     push: 
+  #       - match: '{{typeParams}}'
+  #         scope: entity.name.type
+  #       - match: '(?=})'
+  #         pop: true
+  #   - match: ';'
+  #     pop: true
+  #   - match: '}'
+  #     pop: true
 
