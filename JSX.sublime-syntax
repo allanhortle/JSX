@@ -14,7 +14,7 @@ variables:
 contexts:
   main:
     - include: javascript
-    # - include: jsx
+    - include: jsx
   
   #
   # JSX
@@ -205,6 +205,10 @@ contexts:
       captures:
         1: entity.name.type
 
+    - match: '(?<=type|declare)\s*\w*\s*='
+      push: typeDeclarations
+
+
     
     # class
   classDeclaration:
@@ -214,7 +218,8 @@ contexts:
         - match: \{
           push: 
 
-            - include: classBrackets
+            - include: classBracket
+
             - include: javascript
             - match: '^\s*\w+:\s*({{validType}})(?=;)'
               captures:
@@ -257,8 +262,6 @@ contexts:
           pop: true
 
   arrowFunctionDeclarations:
-
-    # arrow function
     - match: '\((?=\w.*=>)'
       push: 
         - meta_scope: meta.function.declaration
@@ -268,22 +271,6 @@ contexts:
         - include: javascript
         - match: "=>"
           pop: true
-
-    
-    # # class types
-    # # ONLY space SOME word THEN : THEN type THEN ;
-    # - match: '^\s*\w+:\s*{{validType}}(?=;)'
-    #   captures:
-    #     1: entity.name.type
-
-    # - match: '\):'
-    #   push: flowFunctionReturns
-
-    # - match: '(?<!return\ )\('
-    #   push: flowFunctionParams
-
-    # - match: '(?<=type|declare)\s*\w*\s*='
-    #   push: flowTypeDeclarations
 
     
   
@@ -304,38 +291,22 @@ contexts:
       scope: entity.name.type
     - match: '{{typeParams}}\s(?={)'
       scope: entity.name.type
-    # - match: '{$'
-    #   pop: true
-    # - match: '(?={return)'
-    #   pop: true
-    # - match: '(?=\=>)'
-    #   pop: true
-    
-  # flowFunctionParams:
-    
-  #   # - match: '\('
-  #   #   push: flowFunctionParams
-  #   # - match: '{'
-  #   #   push: 
-  #   #     - include: javascript
-  #   #     - match: '(?=})'
-  #   #       pop: true
-  #   - include: javascript
 
-  # flowTypeDeclarations:
-  #   - meta_scope: meta.type.js
-  #   - match: '{{validType}}'
-  #     scope: entity.name.type
-  #   - match: '\('
-  #     push: flowFunctionParams
-  #   - match: '{'
-  #     push: 
-  #       - match: '{{typeParams}}'
-  #         scope: entity.name.type
-  #       - match: '(?=})'
-  #         pop: true
-  #   - match: ';'
-  #     pop: true
-  #   - match: '}'
-  #     pop: true
+  typeDeclarations:
+    - meta_scope: meta.type.js
+    - match: '{{typeParams}}'
+      scope: entity.name.type
+    - match: '{{validType}}(?=[;\n])'
+      scope: entity.name.type
+
+    # - match: '{{validType}}'
+    #   scope: entity.name.type
+    - include: arrowFunctionDeclarations
+    - include: typeFunctionDeclaration
+    - include: typeFunctionReturns
+    - match: ';'
+      pop: true
+    - match: '}'
+      pop: true
+
 

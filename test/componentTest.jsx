@@ -10,13 +10,14 @@ type ClassName = string;
 
 type HtmlProps = Object;
 
-type ListOrArray = List<*> | Array<any>;
+type ListOrArray = List<*>|Array<any>;
 
 type SpruceModifier = string | Object;
 
 type OnChangeMeta = {
     event: Object,
     element: Object
+    rad: (winnter: string) => string
 }
 
 
@@ -32,12 +33,29 @@ type OnChangeMulti = (newValues: Array<string>|string, meta: ?OnChangeMeta) => v
 type OnClick = (event: Object) => void;
 
 
-class rad extends React.Component {
+class rad {
+    rad: Function<asdas>|asdasd;
+    // static rad: string = 'asdas';
     render(name: string, other: Map<*,string>): React.Element<any> {
-        return (name: string) => asdasd
+        return (name: string) => asdasd;
     }
-    other() {
+    other(type: string): string {
+        var rad = function(name: string) {
 
+        }
+    }
+}
+
+class rad extends React.Component() {
+    rad: Function<asdas>|asdasd;
+    // static rad: string = 'asdas';
+    render(name: string, other: Map<*,string>): React.Element<any> {
+        return (name: string) => asdasd;
+    }
+    other(type: string): string {
+        var rad = function(name: string) {
+
+        }
     }
 }
 
@@ -45,9 +63,9 @@ var rad = function(name: string) {
 
 }
 
+var rad: Object<asda>|asdasd = {};
 
-
-function rad(name: string = 'asdasd', other: Map<*,string>): React.Element<any> {
+function rad(name: (asda: string) => rad, other: Map<*,string>): React.Element<any> {
     return function rad(name: string, other: Map<*,string>): React.Element<any> {
     }
 }
@@ -68,14 +86,14 @@ rad({
 
 var rad = 'cool';
 
-var rad = (name: string, other: Map<*,string>): React.Element<any> => {
+var rad = (name: string, other: Map<*,string>, rad = (asda: string) => rad): React.Element<any> => {
     return 'rad'
 }
 
 export default function rad({
     name = 'asdasd',
     other = {},
-    num = 123
+    num = (string: Object) => 'asdasd'
 }: {
     name: string,
     other: Object,
