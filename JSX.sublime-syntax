@@ -13,8 +13,8 @@ variables:
   typeParams: '(?<=:)\s*{{validType}}'
 contexts:
   main:
-    - include: javascript
     - include: jsx
+    - include: javascript
   
   #
   # JSX
@@ -23,46 +23,56 @@ contexts:
   jsx:
     - match: '{{tagStart}}'
       scope: entity.name.tag.jsx
-      set: [metajsx, jsxTags]
+      push: jsxSection
+    - match: (?<=[\w\/])\>
+      scope: entity.name.tag.jsx
 
-  metajsx:
+  jsxSection:
     - meta_scope: meta.jsx
-    - match: ''
-      pop: true
-  
+    - include: jsxTags
+
+
+  jsxSectionInner: 
+    - meta_scope: meta.jsx
+    - include: jsxTags
+
   jsxTags:
-    - meta_scope: entity.name.tag.jsx
-
-    - include: strings
-    - include: comments
     
-    - match: (?<=\{)
-      push: javascriptEmbedded
+    - include: strings
+    
+    - match: \b\w*\b
+      scope: entity.name.tag.jsx
 
-    - match: '(?<=\>)(?!\s*?[<}])'
-      push: 
-        - clear_scopes: true
-        - meta_scope: source.js.jsx meta.jsx 
-        - include: constantEntity
+    - match: \=
+      scope: entity.name.tag.jsx
+
+    # Recursion
+    - match: '{{tagStart}}'
+      scope: entity.name.tag.jsx
+      push: jsxSectionInner
+
+    # Embedding
+    - match: \{
+      scope: entity.name.tag.jsx
+      push: javascriptEmbedded
+    
+    # End
+    - match: '<?\/\w*'
+      scope: entity.name.tag.jsx
+      pop: true
+
+    - match: '>'
+      scope: entity.name.tag.jsx
+      push:
         - include: comments
         - match: \{
           scope: entity.name.tag.jsx
           push: javascriptEmbedded
-        - match: '\}'
-          scope: entity.name.tag.jsx
-        - match: '(?=<)'
+        - match: (?=<)
           pop: true
 
-    - match: '{{tagStart}}'
-      push: jsxTags
-
-    - match: '<?\/\w*>'
-      scope: entity.name.tag.jsx
-      pop: true
-
-
   javascriptEmbedded:
-    - clear_scopes: true
+    - clear_scopes: 1
     - meta_scope: source.js.jsx
     - include: jsx
     - include: javascript
@@ -75,7 +85,7 @@ contexts:
       pop: true
   
   jsEmbeddedInner:
-    - clear_scopes: true
+    - clear_scopes: 1
     - meta_scope: source.js.jsx
     - include: jsx
     - include: javascript
@@ -212,49 +222,49 @@ contexts:
     
     # class
   classDeclaration:
-    - match: class
+    - match: \bclass\b
       scope: keyword.control.js
-      push:
+      set:
+        - include: main
         - match: \{
-          push: 
+          set: classBody
 
-            - include: classBracket
 
-            - include: javascript
-            - match: '^\s*\w+:\s*({{validType}})(?=;)'
-              captures:
-                1: entity.name.type
+  classBody: 
+    - meta_scope: meta.classDeclaration.js
+    - include: main
+    - include: classBrackets
 
-            - match: \w*\(
-              push: 
-                - meta_scope: meta.function.declaration
-                - include: typeFunctionDeclaration
-                - include: typeFunctionReturns
-                - include: functionDeclarations
-                - include: javascript
-                - match: "(?={)"
-                  pop: true
+    - match: '^\s*\w+:\s*({{validType}})(?=;)'
+      captures:
+        1: entity.name.type
 
-            - match: "}"
-              pop: true
-
-        - match: "}"
+    - match: \w*\(
+      push: 
+        - meta_scope: meta.function.declaration
+        - include: typeFunctionDeclaration
+        - include: typeFunctionReturns
+        - include: functionDeclarations
+        - include: main
+        - match: "(?={)"
           pop: true
+
+    - match: "}"
+      pop: true
   
   classBrackets:
     - match: "{"
       push: 
-        - include: javascript
-        - include: classBrackets
+        - meta_scope: meta.classBrackets.js
         - match: "}"
           pop: true
+        - include: classBrackets
+        - include: main
 
   functionDeclarations:
-    # function
     - match: '(?<=function)[\s\w]*(?=\()'
       push: 
         - meta_scope: meta.function.declaration
-        # - include: functionBrackets
         - include: typeFunctionDeclaration
         - include: typeFunctionReturns
         - include: javascript
@@ -262,9 +272,9 @@ contexts:
           pop: true
 
   arrowFunctionDeclarations:
-    - match: '\((?=\w.*=>)'
+    - match: '\((?=[\w)].*=>)'
       push: 
-        - meta_scope: meta.function.declaration
+        - meta_scope: meta.functionDeclaration.js
         - include: arrowFunctionDeclarations
         - include: typeFunctionDeclaration
         - include: typeFunctionReturns
@@ -294,16 +304,15 @@ contexts:
 
   typeDeclarations:
     - meta_scope: meta.type.js
+    - include: arrowFunctionDeclarations
+    - include: typeFunctionDeclaration
+    - include: typeFunctionReturns
+
     - match: '{{typeParams}}'
       scope: entity.name.type
     - match: '{{validType}}(?=[;\n])'
       scope: entity.name.type
-
-    # - match: '{{validType}}'
-    #   scope: entity.name.type
-    - include: arrowFunctionDeclarations
-    - include: typeFunctionDeclaration
-    - include: typeFunctionReturns
+      
     - match: ';'
       pop: true
     - match: '}'

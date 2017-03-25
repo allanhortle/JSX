@@ -6,19 +6,19 @@
 
 type ClassName = string;
 
-// type HockApplier = (ComposedComponent: ReactClass<any>) => ReactClass<any>;
+type HockApplier = (ComposedComponent: ReactClass<any>, other: {asda: string}) => ReactClass<any>;
 
 type HtmlProps = Object;
 
 type ListOrArray = List<*>|Array<any>;
 
-type SpruceModifier = string | Object;
+declare SpruceModifier = string|Object;
 
 type OnChangeMeta = {
     event: Object,
     element: Object
-    rad: (winnter: string) => string
-}
+    rad: (winnter: string) => (rads: sasdas) => asdasd
+};
 
 
 rad({
@@ -46,16 +46,16 @@ class rad {
     }
 }
 
+var a = (): String => 'asdas';
+
 class rad extends React.Component() {
     rad: Function<asdas>|asdasd;
-    // static rad: string = 'asdas';
+    static rad: string = 'asdas';
+    other(type: string): string {
+        return <div><div>asdasdasd</div></div>;
+    }
     render(name: string, other: Map<*,string>): React.Element<any> {
         return (name: string) => asdasd;
-    }
-    other(type: string): string {
-        var rad = function(name: string) {
-
-        }
     }
 }
 
@@ -63,7 +63,7 @@ var rad = function(name: string) {
 
 }
 
-var rad: Object<asda>|asdasd = {};
+var rad: Object<>|asdasd = {};
 
 function rad(name: (asda: string) => rad, other: Map<*,string>): React.Element<any> {
     return function rad(name: string, other: Map<*,string>): React.Element<any> {
@@ -88,6 +88,8 @@ var rad = 'cool';
 
 var rad = (name: string, other: Map<*,string>, rad = (asda: string) => rad): React.Element<any> => {
     return 'rad'
+    return <div
+    >asdfasdfsad</div>
 }
 
 export default function rad({
