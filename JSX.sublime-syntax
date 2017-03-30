@@ -184,8 +184,13 @@ contexts:
   stringRegex:
     - meta_scope: string.regexp.js
     - include: constantEscape
-    # Match ending slash and flag but only if not in a [] character class
-    - match: '\/[gimuy]?(?!.*\])'
+    - match: \[
+      push: 
+        - meta_scope: meta.regexpCharacterClass
+        - include: constantEscape
+        - match: \]
+          pop: true
+    - match: '/[gimuy]?'
       pop: true
 
   stringTemplate:
@@ -272,7 +277,8 @@ contexts:
           pop: true
 
   arrowFunctionDeclarations:
-    - match: '\((?=[\w)].*=>)'
+    # opening bracket then word or ) any ammount of not )
+    - match: '\((?=[\w\)].*=>)'
       push: 
         - meta_scope: meta.functionDeclaration.js
         - include: arrowFunctionDeclarations
