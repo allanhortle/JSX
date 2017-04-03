@@ -231,7 +231,7 @@ contexts:
       scope: keyword.control.js
       set:
         - include: main
-        - match: \{
+        - match: (?<!\()\{
           set: classBody
 
 
