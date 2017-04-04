@@ -4,8 +4,10 @@ name: JSX
 file_extensions: [jsx]
 scope: source.js.jsx
 variables:
-  reservedWords: "(break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|for|function|from|if|import|in|instanceof|new|return|super|switch|this|throw|try|typeof|var|void|while|with|yield|enum|implements|interface|let|package|private|protected|public|static|await|abstract|boolean|byte|char|double|final|float|goto|int|long|native|short|synchronized|throws|transient|volatile)"
+  reservedWords: "(arguments|break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|for|function|from|if|import|in|instanceof|new|return|super|switch|this|throw|try|typeof|var|void|while|with|yield|enum|implements|interface|let|package|private|protected|public|static|await|abstract|boolean|byte|char|double|final|float|goto|int|long|native|short|synchronized|throws|transient|volatile)"
   typeWords: "(type|declare)"
+  builtInObjects: "(console|Object|Function|Boolean|Symbol|Error|EvalError|InternalError|RangeError|ReferenceError|SyntaxError|TypeError|URIError|Number|Math|Date|String|RegExp|Array|Int8Array|Uint8Array|Uint8ClampedArray|Int16Array|Uint16Array|Int32Array|Uint32Array|Float32Array|Float64Array|Map|Set|WeakMap|WeakSet|SIMD|ArrayBuffer|SharedArrayBuffer|Atomics|DataView|JSON|Promise|Generator|GeneratorFunction|AsyncFunction|Reflect|Proxy|Intl|WebAssembly|Iterator|ParallelArray|StopIteration)"
+  builtInFunctions: "eval|isFinite|isNaN|parseFloat|parseInt|decodeURI|decodeURIComponent|encodeURI|encodeURIComponent|escape|unescape"
   constantWords: "(true|false|null|Infinity|NaN|undefined)"
   tagStart: '<(?=\w)'
   validTypeSingle: '[\?\w\[\]\.\*]*(<.*?>)?'
@@ -43,7 +45,7 @@ contexts:
     
     - include: strings
     
-    - match: \b\w*\b
+    - match: \b[\w-]*\b
       scope: entity.name.tag.jsx
 
     - match: \=
@@ -109,6 +111,7 @@ contexts:
     - include: constants
     - include: strings
     - include: comments
+    - include: support
     # - include: bracketsGroup
 
   comments: 
@@ -212,6 +215,93 @@ contexts:
     - match: \}
       scope: string.quoted.js
       pop: true
+
+  support:
+    - match: \b{{builtInObjects}}\b
+      scope: support.class.js
+    - match: \b{{builtInFunctions}}\b
+      scope: support.function.js
+    
+    - match: (?<=console\.)(assert|clear|count|dir|dirxml|error|group|groupCollapsed|groupEnd|info|log|profile|profileEnd|table|time|timeEnd|timeStamp|trace|warn)\b
+      scope: support.function.js
+
+    - match: (?<=Object\.)(length|name|arguments|caller|prototype|assign|getOwnPropertyDescriptor|getOwnPropertyDescriptors|getOwnPropertyNames|getOwnPropertySymbols|is|preventExtensions|seal|create|defineProperties|defineProperty|freeze|getPrototypeOf|setPrototypeOf|isExtensible|isFrozen|isSealed|keys|entries|values)\b
+      scope: support.function.js
+    - match: (?<=Function\.)(length|name|arguments|caller|prototype)\b
+      scope: support.function.js
+    - match: (?<=Boolean\.)(length|name|arguments|caller|prototype)\b
+      scope: support.function.js
+    - match: (?<=Symbol\.)(length|name|arguments|caller|prototype|for|keyFor|hasInstance|isConcatSpreadable|iterator|match|replace|search|species|split|toPrimitive|toStringTag|unscopables|observable)\b
+      scope: support.function.js
+    - match: (?<=Error\.)(length|name|arguments|caller|prototype|captureStackTrace|stackTraceLimit)\b
+      scope: support.function.js
+    - match: (?<=EvalError\.)(length|name|arguments|caller|prototype)\b
+      scope: support.function.js
+    - match: (?<=RangeError\.)(length|name|arguments|caller|prototype)\b
+      scope: support.function.js
+    - match: (?<=ReferenceError\.)(length|name|arguments|caller|prototype)\b
+      scope: support.function.js
+    - match: (?<=SyntaxError\.)(length|name|arguments|caller|prototype)\b
+      scope: support.function.js
+    - match: (?<=TypeError\.)(length|name|arguments|caller|prototype)\b
+      scope: support.function.js
+    - match: (?<=URIError\.)(length|name|arguments|caller|prototype)\b
+      scope: support.function.js
+    - match: (?<=Number\.)(length|name|arguments|caller|prototype|isFinite|isInteger|isNaN|isSafeInteger|parseFloat|parseInt|MAX_VALUE|MIN_VALUE|NaN|NEGATIVE_INFINITY|POSITIVE_INFINITY|MAX_SAFE_INTEGER|MIN_SAFE_INTEGER|EPSILON)\b
+      scope: support.function.js
+    - match: (?<=Math\.)(abs|acos|acosh|asin|asinh|atan|atanh|atan2|ceil|cbrt|expm1|clz32|cos|cosh|exp|floor|fround|hypot|imul|log|log1p|log2|log10|max|min|pow|random|round|sign|sin|sinh|sqrt|tan|tanh|trunc|E|LN10|LN2|LOG10E|LOG2E|PI|SQRT1_2|SQRT2)\b\b
+      scope: support.function.js
+    - match: (?<=Date\.)(length|name|arguments|caller|prototype|now|parse|UTC)\b
+      scope: support.function.js
+    - match: (?<=String\.)(length|name|arguments|caller|prototype|fromCharCode|fromCodePoint|raw)\b
+      scope: support.function.js
+    - match: (?<=RegExp\.)(length|name|arguments|caller|prototype|input|\$_|lastMatch|\$&|lastParen|\$\+|leftContext|\$\`|rightContext|\$\'|\$1|\$2|\$3|\$4|\$5|\$6|\$7|\$8|\$9)\b
+      scope: support.function.js
+    - match: (?<=Array\.)(length|name|arguments|caller|prototype|isArray|from|of)\b
+      scope: support.function.js
+    - match: (?<=Int8Array\.)(length|name|arguments|caller|prototype|BYTES_PER_ELEMENT)\b
+      scope: support.function.js
+    - match: (?<=Uint8Array\.)(length|name|arguments|caller|prototype|BYTES_PER_ELEMENT)\b
+      scope: support.function.js
+    - match: (?<=Uint8ClampedArray\.)(length|name|arguments|caller|prototype|BYTES_PER_ELEMENT)\b
+      scope: support.function.js
+    - match: (?<=Int16Array\.)(length|name|arguments|caller|prototype|BYTES_PER_ELEMENT)\b
+      scope: support.function.js
+    - match: (?<=Uint16Array\.)(length|name|arguments|caller|prototype|BYTES_PER_ELEMENT)\b
+      scope: support.function.js
+    - match: (?<=Int32Array\.)(length|name|arguments|caller|prototype|BYTES_PER_ELEMENT)\b
+      scope: support.function.js
+    - match: (?<=Uint32Array\.)(length|name|arguments|caller|prototype|BYTES_PER_ELEMENT)\b
+      scope: support.function.js
+    - match: (?<=Float32Array\.)(length|name|arguments|caller|prototype|BYTES_PER_ELEMENT)\b
+      scope: support.function.js
+    - match: (?<=Float64Array\.)(length|name|arguments|caller|prototype|BYTES_PER_ELEMENT)\b
+      scope: support.function.js
+    - match: (?<=Map\.)(length|name|arguments|caller|prototype)\b
+      scope: support.function.js
+    - match: (?<=Set\.)(length|name|arguments|caller|prototype)\b
+      scope: support.function.js
+    - match: (?<=WeakMap\.)(length|name|arguments|caller|prototype)\b
+      scope: support.function.js
+    - match: (?<=WeakSet\.)(length|name|arguments|caller|prototype)\b
+      scope: support.function.js
+    - match: (?<=ArrayBuffer\.)(length|name|arguments|caller|prototype|isView)\b
+      scope: support.function.js
+    - match: (?<=DataView\.)(length|name|arguments|caller|prototype)\b
+      scope: support.function.js
+    - match: (?<=JSON\.)(parse|stringify)\b
+      scope: support.function.js
+    - match: (?<=Promise\.)(length|name|arguments|caller|prototype|resolve|reject|all|race)\b
+      scope: support.function.js
+    - match: (?<=Reflect\.)(defineProperty|deleteProperty|apply|construct|get|getOwnPropertyDescriptor|getPrototypeOf|has|isExtensible|ownKeys|preventExtensions|set|setPrototypeOf)\b
+      scope: support.function.js
+    - match: (?<=Proxy\.)(length|name|arguments|caller|revocable)\b
+      scope: support.function.js
+    - match: (?<=Intl\.)(DateTimeFormat|NumberFormat|Collator|v8BreakIterator|getCanonicalLocales)\b
+      scope: support.function.js
+    - match: (?<=WebAssembly\.)(compile|validate|instantiate|Module|Instance|Table|Memory|CompileError|LinkError|RuntimeError)\b
+      scope: support.function.js
+
 
   types: 
     - include: functionDeclarations
