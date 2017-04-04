@@ -15,6 +15,9 @@ contexts:
   main:
     - include: jsx
     - include: javascript
+
+    - match: '(?<=type|declare)\s*\w*\s*='
+      push: typeDeclarations
   
   #
   # JSX
@@ -133,7 +136,7 @@ contexts:
       scope: keyword.control.js
 
   constants:
-    - match: '\b{{constantWords}}\b'
+    - match: '(?<![.])\b{{constantWords}}\b'
       scope: constant.language.js
     - match: >-
         (?xi)
@@ -220,8 +223,7 @@ contexts:
       captures:
         1: entity.name.type
 
-    - match: '(?<=type|declare)\s*\w*\s*='
-      push: typeDeclarations
+
 
 
     
@@ -278,15 +280,17 @@ contexts:
 
   arrowFunctionDeclarations:
     # opening bracket then word or ) any ammount of not )
-    - match: '\((?=[\w\)].*=>)'
-      push: 
-        - meta_scope: meta.functionDeclaration.js
-        - include: arrowFunctionDeclarations
-        - include: typeFunctionDeclaration
-        - include: typeFunctionReturns
-        - include: javascript
-        - match: "=>"
-          pop: true
+    - match: '\((?=[\w)][^\(]*=>)'
+      push: arrowFunctionDeclarationStack
+
+  arrowFunctionDeclarationStack:
+    - meta_scope: meta.functionDeclaration.js
+    - include: arrowFunctionDeclarations
+    - include: typeFunctionDeclaration
+    - include: typeFunctionReturns
+    - include: javascript
+    - match: "=>"
+      pop: true
 
     
   
