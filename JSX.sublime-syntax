@@ -323,9 +323,17 @@ contexts:
       scope: keyword.control.js
       set:
         - include: main
-        - match: (?<!\()\{
+        - match: \(
+          push: classDeclarationFunctionCall
+        - match: \{
           set: classBody
 
+  classDeclarationFunctionCall:
+    - include: main
+    - match: \(
+      push: classDeclarationFunctionCall
+    - match: \)
+      pop: true
 
   classBody: 
     - meta_scope: meta.classDeclaration.js
