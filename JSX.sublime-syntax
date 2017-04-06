@@ -10,7 +10,7 @@ variables:
   builtInFunctions: "eval|isFinite|isNaN|parseFloat|parseInt|decodeURI|decodeURIComponent|encodeURI|encodeURIComponent|escape|unescape"
   constantWords: "(true|false|null|Infinity|NaN|undefined)"
   tagStart: '<(?=[_$a-zA-Z])'
-  validTypeSingle: '[\?\w\[\]\.\*]*(<.*?>)?'
+  validTypeSingle: '[\?\w\[\]\.\*{}]*(<.*?>)?(\[\])?'
   validType: '{{validTypeSingle}}(\s*\|\s*{{validTypeSingle}})*'
   typeParams: '(?<=:)\s*{{validType}}'
 contexts:
