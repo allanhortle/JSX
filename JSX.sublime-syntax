@@ -10,7 +10,7 @@ variables:
   builtInFunctions: "eval|isFinite|isNaN|parseFloat|parseInt|decodeURI|decodeURIComponent|encodeURI|encodeURIComponent|escape|unescape"
   constantWords: "(true|false|null|Infinity|NaN|undefined)"
   tagStart: '<(?=[_$a-zA-Z])'
-  validTypeSingle: '[\?\w\[\]\.\*{}]*(<.*?>)?(\[\])?'
+  validTypeSingle: '[\?\w\[\]\.\*{}]*(<.*?>+(?!, ))?(\[\])?'
   validType: '{{validTypeSingle}}(\s*\|\s*{{validTypeSingle}})*'
   typeParams: '(?<=:)\s*{{validType}}'
 contexts:
@@ -369,6 +369,12 @@ contexts:
         - include: classBrackets
         - include: main
 
+
+
+  #
+  # TYPES
+  #
+
   functionDeclarations:
     - match: '(?<=function)[\s\w]*(?=\()'
       push: 
@@ -383,6 +389,17 @@ contexts:
     # opening bracket then word or ) any ammount of not )
     - match: '\((?=[\w)][^\(]*=>)'
       push: arrowFunctionDeclarationStack
+
+    # not return ( or word( then ( anything except => or ) until the line ends
+    - match: '(?<!return\s)(?<!\w)\((?!.*(=>|\)))'
+      push: arrowFunctionWideDeclaration
+
+  arrowFunctionWideDeclaration:
+    - meta_scope: meta.arrowFunctionDeclaration.js
+    - include: arrowFunctionDeclarationStack
+    - match: "=>"
+      pop: true
+
 
   arrowFunctionDeclarationStack:
     - meta_scope: meta.functionDeclaration.js
