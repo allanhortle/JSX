@@ -18,8 +18,6 @@ contexts:
     - include: jsx
     - include: javascript
 
-    - match: '(?<=type|declare)\s*\w*\s*='
-      push: typeDeclarations
   
   #
   # JSX
@@ -306,6 +304,11 @@ contexts:
       scope: support.function.js
 
 
+
+  #
+  # Types
+  #
+
   types: 
     - include: functionDeclarations
     - include: arrowFunctionDeclarations
@@ -316,11 +319,24 @@ contexts:
       captures:
         1: entity.name.type
 
+    - match: '(?<=type|declare)(.*?=)'
+      push: typeDeclarations
 
+  typeDeclarations:
+    - meta_scope: meta.type.js
+    - match: '[^;]'
+      scope: entity.name.type
+    - match: ';'
+      pop: true
 
-
+  typeStack:
+    - meta_scope: blue
     
-    # class
+
+  #  
+  # class
+  #
+
   classDeclaration:
     - match: \bclass\b
       scope: keyword.control.js
@@ -372,12 +388,12 @@ contexts:
 
 
   #
-  # TYPES
+  # Functions
   #
 
   functionDeclarations:
     - match: '(?<=function)[\s\w]*(?=\()'
-      push: 
+      push:
         - meta_scope: meta.function.declaration
         - include: typeFunctionDeclaration
         - include: typeFunctionReturns
@@ -430,20 +446,6 @@ contexts:
     - match: '{{typeParams}}\s(?={)'
       scope: entity.name.type
 
-  typeDeclarations:
-    - meta_scope: meta.type.js
-    - include: arrowFunctionDeclarations
-    - include: typeFunctionDeclaration
-    - include: typeFunctionReturns
 
-    - match: '{{typeParams}}'
-      scope: entity.name.type
-    - match: '{{validType}}(?=[;\n])'
-      scope: entity.name.type
-      
-    - match: ';'
-      pop: true
-    - match: '}'
-      pop: true
 
 
