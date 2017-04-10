@@ -134,6 +134,9 @@ contexts:
     - scope: comment.line.js
       match: (//).*$\n?
 
+    - match: ^#!.*$
+      scope: comment.line.shebang.js
+
   keywords:
     - match: '\b{{reservedWords}}\b'
       scope: keyword.control.js 
