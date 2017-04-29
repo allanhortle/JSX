@@ -6,7 +6,7 @@ var rad = function(name: {{{{{}}}}}) {
 
 var rad: Object<>|asdasd = {};
 
-function rad(name: (asda: (asd: {}) => asd) => rad, other: Map<*,string>): React.Element<any> {
+function rad(name: (asda: string) => rad, other: Map<*,string>): React.Element<any> {
     return function rad(name: string, other: Map<*,string>): React.Element<any> {
     }
 }
@@ -19,9 +19,11 @@ var rad = (
     thing: () => string
 ): Object => 'rad';
 
+var rad = (string = 'asdasd', other = {a: 2}) => 'asdasd';
+
 var rad = cool((name: string, other: Map<*,string>): Object => 'rad').rad();
 var rad = array
-    .map((name: string, other: Map<*,string>): Object => 'rad')
+    .map((name: string = 'asdasd', other: Map<*,string>): Object => 'rad')
     .map((name: string, other: Map<*,string>): Object => steve.rad().cool())
     .toString();
     
@@ -34,7 +36,11 @@ rad({
 
 var rad = 'cool';
 
-var rad = (name: string, other: Map<*,string>, rad = (asda: string) => rad): React.Element<any> => {
+var rad = (
+    name: string, 
+    other: Map<*,string>, 
+    rad: Function = (asda: string): rad => rad
+): React.Element<any> => {
     return 'rad'
     return <div>asdfasdfsad</div>
 }
@@ -80,20 +86,6 @@ function radical(
     return <div prop={{
         key: string
     }}></div>;
-}
-
-export default function rad({
-    name = 'asdasd',
-    other = {rad: 'string'},
-    num = 2
-}: {
-    name: string,
-    other: Object,
-    num: number,
-}) {
-    return {
-        asdasd: string
-    }
 }
 
 var a = (): String => 'asdas';

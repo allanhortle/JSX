@@ -314,7 +314,7 @@ contexts:
   types: 
     - include: functionDeclarations
     - include: arrowFunctionDeclarations
-    # - include: classDeclaration
+    - include: classDeclaration
 
     # Variables
     - match: '(?<=const|let|var)(?:\s*\w*:\s*)({{validType}})\s*='
@@ -334,6 +334,8 @@ contexts:
   typeStack:
     - include: typeStackDeep
     - match: '\,'
+      pop: true
+    - match: \=
       pop: true
     - match: '(?=\):?)'
       pop: true
@@ -376,7 +378,7 @@ contexts:
   functionDeclarations:
     - match: '(?<=function)[\s\w]*(?=\()'
       push: 
-        - meta_scope: blue
+        # - meta_scope: blue
         - match: '\('
           push: functionDeclarationStack
         
@@ -390,6 +392,15 @@ contexts:
         - match: (?=\{)
           pop: true
 
+  functionDeclarationStack:
+    - meta_scope: meta.functionDeclarationStack.js
+    - match: ':\s'
+      push: typeStack
+    - match: '\('
+      push: functionDeclarationStack
+    - match: '\)'
+      pop: true
+
   arrowFunctionDeclarations:
     # opening bracket then word or ) any ammount of not )
     - match: '\((?=[\w)][^\(]*=>)'
@@ -401,7 +412,11 @@ contexts:
         
 
   arrowFunctionDeclarationStack: 
-    - meta_scope: meta.arrowFunctionDeclaration.js green
+    - meta_scope: meta.arrowFunctionDeclaration.js
+  
+    - match: '(?<!return\s)(?<!\w)\((?!.*(=>|\)))'
+      push: arrowFunctionDeclarationStack
+
     - match: '(?<!\)):\s'
       push: typeStack
     - match: '\):'
@@ -411,17 +426,11 @@ contexts:
           pop: true
         - match: '.'
           scope: entity.name.type.js
+
     - match: '=>'
       pop: true
 
-  functionDeclarationStack:
-    - meta_scope: meta.functionDeclarationStack green
-    - match: ':\s'
-      push: typeStack
-    - match: '\('
-      push: functionDeclarationStack
-    - match: '\)'
-      pop: true
+
 
 
   #  
@@ -440,6 +449,7 @@ contexts:
 
   classDeclarationFunctionCall:
     - include: main
+    # - include: typeStack
     - match: \(
       push: classDeclarationFunctionCall
     - match: \)
@@ -450,18 +460,25 @@ contexts:
     - include: main
     - include: classBrackets
 
-    - match: '^\s*\w+:\s*({{validType}})(?=;)'
+    - match: '^\s*\w+:\s*(.*)(?=;)'
+      captures:
+        1: entity.name.type
+
+    - match: '(?<=static)\s*\w+:\s*(.*?)(?=[=;])'
       captures:
         1: entity.name.type
 
     - match: \w*\(
       push: 
         - meta_scope: meta.function.declaration
-        - include: typeFunctionDeclaration
-        - include: typeFunctionReturns
-        - include: functionDeclarations
-        - include: main
+        - include: functionDeclarationStack
         - match: "(?={)"
+          pop: true
+
+    - match: '(?<=:).'
+      push: 
+        - meta_scope: entity.name.type.js
+        - match: .(?={\n)
           pop: true
 
     - match: "}"
