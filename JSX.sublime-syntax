@@ -317,7 +317,7 @@ contexts:
     - include: classDeclaration
 
     # Variables
-    - match: '(?<=const|let|var)(?:\s*\w*:\s*)({{validType}})\s*='
+    - match: '(?<=const|let|var)(?:\s*\w*:\s*)(.*)\s*='
       captures:
         1: entity.name.type
 
@@ -460,7 +460,7 @@ contexts:
     - include: main
     - include: classBrackets
 
-    - match: '^\s*\w+:\s*(.*)(?=;)'
+    - match: '^\s*\w+:\s*(.*?)(?=[=;])'
       captures:
         1: entity.name.type
 
