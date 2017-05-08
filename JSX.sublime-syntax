@@ -317,7 +317,7 @@ contexts:
     - include: classDeclaration
 
     # Variables
-    - match: '(?<=const|let|var)(?:\s*\w*:\s*)(.*)\s*='
+    - match: '(?<=const|let|var)(?:\s*\w*:\s*)(.*?)\s*='
       captures:
         1: entity.name.type
 
@@ -407,7 +407,7 @@ contexts:
       push: arrowFunctionDeclarationStack
 
     # not return ( or word( then ( anything except => or ) until the line ends
-    - match: '(?<!return\s)(?<!\w)\((?!.*(=>|\)))'
+    - match: '(?<!return\s)(?<!\w)(?<!=>\s)(?<=\[)\((?!.*(=>|\)))'
       push: arrowFunctionDeclarationStack
         
 
@@ -419,7 +419,7 @@ contexts:
 
     - match: '(?<!\)):\s'
       push: typeStack
-    - match: '\):'
+    - match: '\):?'
       push: 
         - include: typeStackDeep
         - match: '\s(?=\=\>)'
