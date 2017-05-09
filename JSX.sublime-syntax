@@ -13,13 +13,13 @@ variables:
   validTypeSingle: '[\?\w\[\]\.\*{}]*(<.*?>+(?!, ))?(\[\])?'
   validType: '{{validTypeSingle}}(\s*\|\s*{{validTypeSingle}})*'
   typeParams: '(?<=:)\s*{{validType}}'
+  type: '[\?\w\[\]\.\*{}()]'
+  returnType: '[\?\w\[\]\.\*{}]'
 contexts:
   main:
     - include: jsx
     - include: javascript
 
-    - match: '(?<=type|declare)\s*\w*\s*='
-      push: typeDeclarations
   
   #
   # JSX
@@ -309,21 +309,137 @@ contexts:
       scope: support.function.js
 
 
+
+  #
+  # Types
+  #
+
   types: 
     - include: functionDeclarations
     - include: arrowFunctionDeclarations
     - include: classDeclaration
 
     # Variables
-    - match: '(?<=const|let|var)(?:\s*\w*:\s*)({{validType}})\s*='
+    - match: '(?<=const|let|var)(?:\s*\w*:\s*)(.*?)\s*='
       captures:
         1: entity.name.type
 
+    - match: '(?<=type|declare)(.*?=)'
+      push: typeDeclarations
+
+  typeDeclarations:
+    - meta_scope: meta.type.js
+    - match: '[^;]'
+      scope: entity.name.type
+    - match: ';'
+      pop: true
+
+  typeStack:
+    - include: typeStackDeep
+    - match: '\,'
+      pop: true
+    - match: \=
+      pop: true
+    - match: '(?=\):?)'
+      pop: true
+    - match: '[^,]'
+      scope: entity.name.type.js
+
+  typeStackDeep:
+    - match: '\('
+      push: typeStackDeepFunction
+    - match: '\{'
+      push: typeStackDeepObject
+    - match: '\<'
+      push: typeStackDeepPoly
+
+
+  typeStackDeepObject:
+    - meta_scope: entity.name.type.js
+    - match: \{
+      push: typeStackDeepObject
+    - match: \}
+      pop: true
+
+  typeStackDeepPoly:
+    - meta_scope: entity.name.type.js
+    - match: \>
+      pop: true
+
+  typeStackDeepFunction:
+    - meta_scope: entity.name.type.js
+    - match: '\('
+      push: typeStackDeepFunction
+    - match: \)
+      pop: true
+
+
+  #
+  # Functions
+  #
+
+  functionDeclarations:
+    - match: '(?<=function)[\s\w]*(?=\()'
+      push: 
+        # - meta_scope: blue
+        - match: '\('
+          push: functionDeclarationStack
+        
+        # returns
+        - match: '(?<=:).'
+          push: 
+            - meta_scope: entity.name.type.js
+            - match: .(?={\n)
+              pop: true
+
+        - match: (?=\{)
+          pop: true
+
+  functionDeclarationStack:
+    - meta_scope: meta.functionDeclarationStack.js
+    - match: ':\s'
+      push: typeStack
+    - match: '\('
+      push: functionDeclarationStack
+    - match: '\)'
+      pop: true
+
+  arrowFunctionDeclarations:
+    # opening bracket then word or ) any ammount of not )
+    - match: '\((?=[\w)][^\(]*=>)'
+      push: arrowFunctionDeclarationStack
+
+    # not return ( or word( then ( anything except => or ) until the line ends
+    - match: '(?<!return\s)(?<!\w)(?<!=>\s)(?<=\[)\((?!.*(=>|\)))'
+      push: arrowFunctionDeclarationStack
+        
+
+  arrowFunctionDeclarationStack: 
+    - meta_scope: meta.arrowFunctionDeclaration.js
+  
+    - match: '(?<!return\s)(?<!\w)\((?!.*(=>|\)))'
+      push: arrowFunctionDeclarationStack
+
+    - match: '(?<!\)):\s'
+      push: typeStack
+    - match: '\):?'
+      push: 
+        - include: typeStackDeep
+        - match: '\s(?=\=\>)'
+          pop: true
+        - match: '.'
+          scope: entity.name.type.js
+
+    - match: '=>'
+      pop: true
 
 
 
-    
-    # class
+
+  #  
+  # class
+  #
+
   classDeclaration:
     - match: \bclass\b
       scope: keyword.control.js
@@ -336,6 +452,7 @@ contexts:
 
   classDeclarationFunctionCall:
     - include: main
+    # - include: typeStack
     - match: \(
       push: classDeclarationFunctionCall
     - match: \)
@@ -346,18 +463,25 @@ contexts:
     - include: main
     - include: classBrackets
 
-    - match: '^\s*\w+:\s*({{validType}})(?=;)'
+    - match: '^\s*\w+:\s*(.*?)(?=[=;])'
+      captures:
+        1: entity.name.type
+
+    - match: '(?<=static)\s*\w+:\s*(.*?)(?=[=;])'
       captures:
         1: entity.name.type
 
     - match: \w*\(
       push: 
         - meta_scope: meta.function.declaration
-        - include: typeFunctionDeclaration
-        - include: typeFunctionReturns
-        - include: functionDeclarations
-        - include: main
+        - include: functionDeclarationStack
         - match: "(?={)"
+          pop: true
+
+    - match: '(?<=:).'
+      push: 
+        - meta_scope: entity.name.type.js
+        - match: .(?={\n)
           pop: true
 
     - match: "}"
@@ -371,82 +495,5 @@ contexts:
           pop: true
         - include: classBrackets
         - include: main
-
-
-
-  #
-  # TYPES
-  #
-
-  functionDeclarations:
-    - match: '(?<=function)[\s\w]*(?=\()'
-      push: 
-        - meta_scope: meta.function.declaration
-        - include: typeFunctionDeclaration
-        - include: typeFunctionReturns
-        - include: javascript
-        - match: "{"
-          pop: true
-
-  arrowFunctionDeclarations:
-    # opening bracket then word or ) any ammount of not )
-    - match: '\((?=[\w)][^\(]*=>)'
-      push: arrowFunctionDeclarationStack
-
-    # not return ( or word( then ( anything except => or ) until the line ends
-    - match: '(?<!return\s)(?<!\w)\((?!.*(=>|\)))'
-      push: arrowFunctionWideDeclaration
-
-  arrowFunctionWideDeclaration:
-    - meta_scope: meta.arrowFunctionDeclaration.js
-    - include: arrowFunctionDeclarationStack
-    - match: "=>"
-      pop: true
-
-
-  arrowFunctionDeclarationStack:
-    - meta_scope: meta.functionDeclaration.js
-    - include: arrowFunctionDeclarations
-    - include: typeFunctionDeclaration
-    - include: typeFunctionReturns
-    - include: javascript
-    - match: "=>"
-      pop: true
-
-    
-  
-  typeFunctionDeclaration:
-    - match: '(?<!return\ )\('
-      push: 
-        - meta_scope: meta.type.flowFunctionParams.js
-        - include: javascript
-        - match: '{{typeParams}}'
-          scope: entity.name.type
-        - match: '(?=\))'
-          pop: true
-
-
-  typeFunctionReturns:
-    - meta_scope: meta.type.js
-    - match: '{{typeParams}}'
-      scope: entity.name.type
-    - match: '{{typeParams}}\s(?={)'
-      scope: entity.name.type
-
-  typeDeclarations:
-    - meta_scope: meta.type.js
-    - include: arrowFunctionDeclarations
-    - include: typeFunctionDeclaration
-    - include: typeFunctionReturns
-
-    - match: '{{typeParams}}'
-      scope: entity.name.type
-    - match: '{{validType}}(?=[;\n])'
-      scope: entity.name.type
-      
-    - match: ';'
-      pop: true
-    - match: '}'
-      pop: true
 
 
