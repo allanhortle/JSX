@@ -406,7 +406,7 @@ contexts:
 
   arrowFunctionDeclarations:
     # opening bracket then word or ) any ammount of not )
-    - match: '\((?=[\w)][^\(]*=>)'
+    - match: '\((?=[\w{)][^\(]*=>)'
       push: arrowFunctionDeclarationStack
 
     # not return ( or word( then ( anything except => or ) until the line ends
