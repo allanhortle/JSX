@@ -140,9 +140,6 @@ contexts:
   keywords:
     - match: '\b{{reservedWords}}\b'
       scope: keyword.control.js 
-    # - match: '^\s*{{typeWords}}\s'
-    - match: '^\s*{{typeWords}}\b(?![:])'
-      scope: keyword.control.js
 
   constants:
     - match: '(?<![.])\b{{constantWords}}\b'
@@ -324,7 +321,10 @@ contexts:
       captures:
         1: entity.name.type
 
-    - match: '(?<=type|declare)(.*?=)'
+    # - match: '(?<=?type|declare)(.*?=)'
+    - match: '^\s*({{typeWords}})(.*?=)'
+      captures:
+        1: keyword.control.js
       push: typeDeclarations
 
   typeDeclarations:
