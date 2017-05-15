@@ -7,7 +7,7 @@ variables:
   reservedWords: "(arguments|break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|for|function|from|if|import|in|instanceof|new|return|super|switch|this|throw|try|typeof|var|void|while|with|yield|enum|implements|interface|let|package|private|protected|public|static|await|abstract|boolean|byte|char|double|final|float|goto|int|long|native|short|synchronized|throws|transient|volatile)"
   typeWords: "(type|declare)"
   builtInObjects: "(console|Object|Function|Boolean|Symbol|Error|EvalError|InternalError|RangeError|ReferenceError|SyntaxError|TypeError|URIError|Number|Math|Date|String|RegExp|Array|Int8Array|Uint8Array|Uint8ClampedArray|Int16Array|Uint16Array|Int32Array|Uint32Array|Float32Array|Float64Array|Map|Set|WeakMap|WeakSet|SIMD|ArrayBuffer|SharedArrayBuffer|Atomics|DataView|JSON|Promise|Generator|GeneratorFunction|AsyncFunction|Reflect|Proxy|Intl|WebAssembly|Iterator|ParallelArray|StopIteration)"
-  builtInFunctions: "eval|isFinite|isNaN|parseFloat|parseInt|decodeURI|decodeURIComponent|encodeURI|encodeURIComponent|escape|unescape"
+  builtInFunctions: "(eval|isFinite|isNaN|parseFloat|parseInt|decodeURI|decodeURIComponent|encodeURI|encodeURIComponent|escape|unescape)"
   constantWords: "(true|false|null|Infinity|NaN|undefined)"
   tagStart: '<(?=[_$a-zA-Z])'
   validTypeSingle: '[\?\w\[\]\.\*{}]*(<.*?>+(?!, ))?(\[\])?'
@@ -322,9 +322,10 @@ contexts:
         1: entity.name.type
 
     # - match: '(?<=?type|declare)(.*?=)'
-    - match: '^\s*({{typeWords}})(.*?=)'
+    - match: '^\s*(export\s)?({{typeWords}})(.*?=)'
       captures:
         1: keyword.control.js
+        2: keyword.control.js
       push: typeDeclarations
 
   typeDeclarations:
