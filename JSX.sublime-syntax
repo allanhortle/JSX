@@ -317,9 +317,10 @@ contexts:
     - include: classDeclaration
 
     # Variables
-    - match: '(?<=const|let|var)(?:\s*\w*:\s*)(.*?)\s*='
+    - match: '^\s*(const|let|var)(?:\s*\w*:\s*)(.*?)\s*='
       captures:
-        1: entity.name.type
+        1: keyword.control.js
+        2: entity.name.type
 
     # - match: '(?<=?type|declare)(.*?=)'
     - match: '^\s*(export\s)?({{typeWords}}\b)(.*?=)'
