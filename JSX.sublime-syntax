@@ -323,7 +323,7 @@ contexts:
         2: entity.name.type
 
     # - match: '(?<=?type|declare)(.*?=)'
-    - match: '^\s*(export\s)?({{typeWords}}\b)(.*?=)'
+    - match: '^(export\s)?({{typeWords}}\b)(.*?=)'
       captures:
         1: keyword.control.js
         2: keyword.control.js
