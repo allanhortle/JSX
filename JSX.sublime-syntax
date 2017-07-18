@@ -138,7 +138,7 @@ contexts:
       scope: comment.line.shebang.js
 
   keywords:
-    - match: '\b{{reservedWords}}\b'
+    - match: '\b{{reservedWords}}\b[^:]'
       scope: keyword.control.js 
 
   constants:
@@ -317,7 +317,7 @@ contexts:
     - include: classDeclaration
 
     # Variables
-    - match: '^\s*(const|let|var)(?:\s*\w*:\s*)(.*?)\s*='
+    - match: '^\s*(const|let|var)(?:\s+\w*:\s*)(.*?)\s*='
       captures:
         1: keyword.control.js
         2: entity.name.type
@@ -443,7 +443,7 @@ contexts:
   #
 
   classDeclaration:
-    - match: \bclass\b
+    - match: \bclass\b[^:]
       scope: keyword.control.js
       set:
         - include: main
