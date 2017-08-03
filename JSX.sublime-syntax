@@ -138,7 +138,7 @@ contexts:
       scope: comment.line.shebang.js
 
   keywords:
-    - match: '\b{{reservedWords}}\b[^:]'
+    - match: '\b{{reservedWords}}\b'
       scope: keyword.control.js 
 
   constants:
@@ -337,6 +337,7 @@ contexts:
       pop: true
 
   typeStack:
+    - include: comments
     - include: typeStackDeep
     - match: '\,'
       pop: true
@@ -398,6 +399,7 @@ contexts:
           pop: true
 
   functionDeclarationStack:
+    - include: comments
     - meta_scope: meta.functionDeclarationStack.js
     - match: ':\s'
       push: typeStack
@@ -443,7 +445,7 @@ contexts:
   #
 
   classDeclaration:
-    - match: \bclass\b[^:]
+    - match: \bclass\b(?!:)
       scope: keyword.control.js
       set:
         - include: main
