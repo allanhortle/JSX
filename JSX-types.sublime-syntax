@@ -1,0 +1,207 @@
+%YAML 1.2
+---
+name: JSX with types
+file_extensions: [jsx]
+scope: source.js.jsx
+variables:
+  typeWords: "(type|declare)"
+contexts:
+  main:
+    - match: ''
+      push: JSX.sublime-syntax
+      with_prototype:
+          - include: types
+
+  #
+  # Types
+  #
+
+  types: 
+    - include: functionDeclarations
+    - include: arrowFunctionDeclarations
+    - include: classDeclaration
+
+    # Variables
+    - match: '^\s*(const|let|var)(?:\s+\w*:\s*)(.*?)\s*='
+      captures:
+        1: keyword.control.js
+        2: entity.name.type
+
+    - match: '^(export\s)?({{typeWords}}\b)(.*?=)'
+      captures:
+        1: keyword.control.js
+        2: keyword.control.js
+      push: typeDeclarations
+
+  typeDeclarations:
+    - meta_scope: meta.type.js
+    - match: '[^;]'
+      scope: entity.name.type
+    - match: ';'
+      pop: true
+
+  typeStack:
+    - include: comments
+    - include: typeStackDeep
+    - match: '\,'
+      pop: true
+    - match: \=
+      pop: true
+    - match: '(?=\):?)'
+      pop: true
+    - match: '[^,]'
+      scope: entity.name.type.js
+
+  typeStackDeep:
+    - match: '\('
+      push: typeStackDeepFunction
+    - match: '\{'
+      push: typeStackDeepObject
+    - match: '\<'
+      push: typeStackDeepPoly
+
+
+  typeStackDeepObject:
+    - meta_scope: entity.name.type.js
+    - match: \{
+      push: typeStackDeepObject
+    - match: \}
+      pop: true
+
+  typeStackDeepPoly:
+    - meta_scope: entity.name.type.js
+    - match: \>
+      pop: true
+
+  typeStackDeepFunction:
+    - meta_scope: entity.name.type.js
+    - match: '\('
+      push: typeStackDeepFunction
+    - match: \)
+      pop: true
+
+
+  #
+  # Functions
+  #
+
+  functionDeclarations:
+    - match: '(?<=function)[\s\w]*(?=\()'
+      push: 
+        # - meta_scope: blue
+        - match: '\('
+          push: functionDeclarationStack
+        
+        # returns
+        - match: '(?<=:).'
+          push: 
+            - meta_scope: entity.name.type.js
+            - match: .(?={\n)
+              pop: true
+
+        - match: (?=\{)
+          pop: true
+
+  functionDeclarationStack:
+    - include: comments
+    - meta_scope: meta.functionDeclarationStack.js
+    - match: ':\s'
+      push: typeStack
+    - match: '\('
+      push: functionDeclarationStack
+    - match: '\)'
+      pop: true
+
+  arrowFunctionDeclarations:
+    # opening bracket then word or ) any ammount of not )
+    - match: '\((?=[\w{)][^\(]*=>)'
+      push: arrowFunctionDeclarationStack
+
+    # not return ( or word( then ( anything except => or ) until the line ends
+    - match: '(?<!return\s)(?<!\w)(?<!=>\s)(?<=\[)\((?!.*(=>|\)))'
+      push: arrowFunctionDeclarationStack
+        
+
+  arrowFunctionDeclarationStack: 
+    - meta_scope: meta.arrowFunctionDeclaration.js
+  
+    - match: '(?<!return\s)(?<!\w)\((?!.*(=>|\)))'
+      push: arrowFunctionDeclarationStack
+
+    - match: '(?<!\)):\s'
+      push: typeStack
+    - match: '\):?'
+      push: 
+        - include: typeStackDeep
+        - match: '\s(?=\=\>)'
+          pop: true
+        - match: '.'
+          scope: entity.name.type.js
+
+    - match: '=>'
+      pop: true
+
+
+
+
+  #  
+  # class
+  #
+
+  classDeclaration:
+    - match: \bclass\b(?!:)
+      scope: keyword.control.js
+      set:
+        - include: main
+        - match: \(
+          push: classDeclarationFunctionCall
+        - match: \{
+          set: classBody
+
+  classDeclarationFunctionCall:
+    - include: main
+    # - include: typeStack
+    - match: \(
+      push: classDeclarationFunctionCall
+    - match: \)
+      pop: true
+
+  classBody: 
+    - meta_scope: meta.classDeclaration.js
+    - include: main
+    - include: classBrackets
+
+    - match: '^\s*\w+:\s*(.*?)(?=[=;])'
+      captures:
+        1: entity.name.type
+
+    - match: '(?<=static)\s*\w+:\s*(.*?)(?=[=;])'
+      captures:
+        1: entity.name.type
+
+    - match: \w*\(
+      push: 
+        - meta_scope: meta.function.declaration
+        - include: functionDeclarationStack
+        - match: "(?={)"
+          pop: true
+
+    - match: '(?<=:).'
+      push: 
+        - meta_scope: entity.name.type.js
+        - match: .(?={\n)
+          pop: true
+
+    - match: "}"
+      pop: true
+  
+  classBrackets:
+    - match: "{"
+      push: 
+        - meta_scope: meta.classBrackets.js
+        - match: "}"
+          pop: true
+        - include: classBrackets
+        - include: main
+
+
