@@ -388,6 +388,8 @@ contexts:
 
   typeStackDeepPoly:
     - meta_scope: entity.name.type.js
+    - match: \<
+      push: typeStackDeepPoly
     - match: \>
       pop: true
 
@@ -432,18 +434,18 @@ contexts:
 
   arrowFunctionDeclarations:
     # opening bracket then word or ) any ammount of not )
-    - match: '\((?=[\w{)][^\(]*=>)'
+    - match: '\((?=[\w.{)][^\(]*=>)'
       push: arrowFunctionDeclarationStack
 
     # not return ( or word( then ( anything except => or ) until the line ends
-    - match: '(?<!return\s)(?<!\w)(?<!=>\s)(?<=\[)\((?!.*(=>|\)))'
+    - match: '(?<!return\s)(?<!\w.)(?<!=>\s)(?<=\[)\((?!.*(=>|\)))'
       push: arrowFunctionDeclarationStack
         
 
   arrowFunctionDeclarationStack: 
     - meta_scope: meta.arrowFunctionDeclaration.js
   
-    - match: '(?<!return\s)(?<!\w)\((?!.*(=>|\)))'
+    - match: '(?<!return\s)(?<![\w.])\((?!.*(=>|\)))'
       push: arrowFunctionDeclarationStack
 
     - match: '(?<!\)):\s'
@@ -470,11 +472,13 @@ contexts:
     - match: \bclass\b(?!:)
       scope: keyword.control.js
       set:
-        - include: main
+        - match: <
+          push: typeStackDeepPoly
         - match: \(
           push: classDeclarationFunctionCall
         - match: \{
           set: classBody
+        - include: main
 
   classDeclarationFunctionCall:
     - include: main
