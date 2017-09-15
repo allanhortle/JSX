@@ -138,8 +138,8 @@ contexts:
       scope: comment.line.shebang.js
 
   keywords:
-    - match: '\b{{reservedWords}}\b'
-      scope: keyword.control.js 
+    - match: '\b{{reservedWords}}\b|\bdeclare\b'
+      scope: keyword.control.js
 
   constants:
     - match: '(?<![.])\b{{constantWords}}\b'
@@ -316,6 +316,16 @@ contexts:
     - include: arrowFunctionDeclarations
     - include: classDeclaration
 
+    - match: (\w*)(<.*?>)
+      captures:
+        2: entity.name.type
+
+    - match: (static )(<.*?>)
+      captures:
+        1: keyword.control.js
+        2: entity.name.type
+
+
     # Variables
     - match: '^\s*(const|let|var)(?:\s+\w*:\s*)(.*?)\s*='
       captures:
@@ -340,6 +350,7 @@ contexts:
         1: keyword.control.js
         2: keyword.control.js
       push: typeDeclarations
+
 
 
   typeObjectDeclarations:
@@ -406,9 +417,10 @@ contexts:
   #
 
   functionDeclarations:
-    - match: '(?<=function)[\s\w]*(?=\()'
+    # `declare function` is different to normal useage
+    # the block will never contain {}
+    - match: '(?<=declare function).*?(?=\()'
       push: 
-        # - meta_scope: blue
         - match: '\('
           push: functionDeclarationStack
         
@@ -416,7 +428,23 @@ contexts:
         - match: '(?<=:).'
           push: 
             - meta_scope: entity.name.type.js
-            - match: .(?={\n)
+            - match: .(?={\n|;)
+              pop: true
+
+        - match: (?=;)
+          pop: true
+
+    # plain `function` calls
+    - match: '(?<=function)[\s\w]*(?=\()'
+      push: 
+        - match: '\('
+          push: functionDeclarationStack
+        
+        # returns
+        - match: '(?<=:).'
+          push: 
+            - meta_scope: entity.name.type.js
+            - match: .(?={\n|;)
               pop: true
 
         - match: (?=\{)
@@ -511,7 +539,7 @@ contexts:
     - match: '(?<=:).'
       push: 
         - meta_scope: entity.name.type.js
-        - match: .(?={\n)
+        - match: .(?={\n|;)
           pop: true
 
     - match: "}"
