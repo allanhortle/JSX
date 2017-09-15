@@ -322,15 +322,37 @@ contexts:
         1: keyword.control.js
         2: entity.name.type
 
-    # - match: '(?<=?type|declare)(.*?=)'
+    # Object Type
+    - match: '^(export\s)?({{typeWords}}\b)(.*?=\s*)({)'
+      captures:
+        1: keyword.control.js
+        2: keyword.control.js
+      push: typeObjectDeclarations
+
+    - match: '^(import\s)(type\b)'
+      captures:
+        1: keyword.control.js
+        2: keyword.control.js
+
+    # Other Types
     - match: '^(export\s)?({{typeWords}}\b)(.*?=)'
       captures:
         1: keyword.control.js
         2: keyword.control.js
       push: typeDeclarations
 
+
+  typeObjectDeclarations:
+    - meta_scope: meta.objectType.js meta.type.js
+    - include: comments
+    - match: '}[;|]'
+      pop: true
+    - match: '[^;]'
+      scope: entity.name.type
+
   typeDeclarations:
     - meta_scope: meta.type.js
+    - include: comments
     - match: '[^;]'
       scope: entity.name.type
     - match: ';'
