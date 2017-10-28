@@ -316,8 +316,9 @@ contexts:
     - include: arrowFunctionDeclarations
     - include: classDeclaration
 
-    - match: (\w*)(<.*?>)
+    - match: ([\w.]*)(<.*?>)
       captures:
+        1: entity.name.type
         2: entity.name.type
 
     - match: (static )(<.*?>)
@@ -374,7 +375,7 @@ contexts:
     - include: typeStackDeep
     - match: '\,'
       pop: true
-    - match: \=
+    - match: (?=\=[^>])
       pop: true
     - match: '(?=\):?)'
       pop: true
@@ -417,7 +418,7 @@ contexts:
   #
 
   functionDeclarations:
-    # `declare function` is different to normal useage
+    # `declare function` is different to normal usage
     # the block will never contain {}
     - match: '(?<=declare function).*?(?=\()'
       push: 
@@ -453,6 +454,13 @@ contexts:
   functionDeclarationStack:
     - include: comments
     - meta_scope: meta.functionDeclarationStack.js
+    - match: '(?=\=[^>])'
+      push:
+          - include: javascript
+          - match: '[,]'
+            pop: true
+          - match: (?=\))
+            pop: true
     - match: ':\s'
       push: typeStack
     - match: '\('
@@ -465,6 +473,7 @@ contexts:
     - match: '\((?=[\w.{)][^\(]*=>)'
       push: arrowFunctionDeclarationStack
 
+
     # not return ( or word( then ( anything except => or ) until the line ends
     - match: '(?<!return\s)(?<!\w.)(?<!=>\s)(?<=\[)\((?!.*(=>|\)))'
       push: arrowFunctionDeclarationStack
@@ -472,6 +481,14 @@ contexts:
 
   arrowFunctionDeclarationStack: 
     - meta_scope: meta.arrowFunctionDeclaration.js
+
+    - match: '(?=\=[^>])'
+      push:
+          - include: javascript
+          - match: ','
+            pop: true
+          - match: (?=\))
+            pop: true
   
     - match: '(?<!return\s)(?<![\w.])\((?!.*(=>|\)))'
       push: arrowFunctionDeclarationStack
