@@ -316,8 +316,17 @@ contexts:
     - include: arrowFunctionDeclarations
     - include: classDeclaration
 
-    - match: ([a-zA-Z_.]*)(<[a-zA-Z_, ]*?>)
+    # Generics as Types
+    - match: (?<=:)\s*([a-zA-Z_.]*)(<[a-zA-Z_, *]*?>)
       captures:
+        # color the name
+        1: entity.name.type
+        2: entity.name.type
+
+    # Generic Declarations
+    - match: ([a-zA-Z_.]*)(<[a-zA-Z_, *]*?>)
+      captures:
+        # Dont color the name
         # 1: entity.name.type
         2: entity.name.type
 
