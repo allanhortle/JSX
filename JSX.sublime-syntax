@@ -45,6 +45,9 @@ contexts:
     
     - include: strings
     
+    - match: '\s[a-zA-Z_]*(?=[=\s])'
+      scope: entity.other.attribute-name
+
     - match: '\b\w*\b'
       scope: entity.name.tag.jsx
 
