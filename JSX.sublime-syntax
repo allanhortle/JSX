@@ -441,7 +441,7 @@ contexts:
         - match: '(?<=:).'
           push: 
             - meta_scope: entity.name.type.js
-            - match: .(?={\n|;)
+            - match: .(?={\s|\n|;)
               pop: true
 
         - match: (?=;)
@@ -457,7 +457,7 @@ contexts:
         - match: '(?<=:).'
           push: 
             - meta_scope: entity.name.type.js
-            - match: .(?={\n|;)
+            - match: .(?={\s|\n|;)
               pop: true
 
         - match: (?=\{)
