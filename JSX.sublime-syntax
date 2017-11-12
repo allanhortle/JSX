@@ -320,7 +320,7 @@ contexts:
     - include: classDeclaration
 
     # Generics as Types
-    - match: (?<=:)\s*([a-zA-Z_.]*)(<[a-zA-Z_, *]*?>)
+    - match: (?<=:)\s*([a-zA-Z_.]+)(<[a-zA-Z_, *]*?>)
       captures:
         # color the name
         1: entity.name.type
