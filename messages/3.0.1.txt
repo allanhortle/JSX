@@ -1,0 +1,10 @@
+JSX 3.0.1
+=========
+
+* add attribute names to JSX tags (#22)
+* Stop JSX in ternaries being highlighted as a generic type (#28)
+* Fix issues around whitespace after that opening { (#27)
+
+
+Be sure to make issues (or shout at me) for broken things:
+https://github.com/allanhortle/JSX/issues
