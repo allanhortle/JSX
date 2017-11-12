@@ -475,6 +475,8 @@ contexts:
             pop: true
     - match: ':\s'
       push: typeStack
+    - match: '\{'
+      push: jsEmbeddedInner
     - match: '\('
       push: functionDeclarationStack
     - match: '\)'
