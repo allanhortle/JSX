@@ -512,7 +512,7 @@ contexts:
     - match: '\):?'
       push: 
         - include: typeStackDeep
-        - match: '\s(?=\=\>)'
+        - match: '\s?(?=\=\>)'
           pop: true
         - match: '.'
           scope: entity.name.type.js
